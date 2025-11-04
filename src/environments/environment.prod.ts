@@ -2,7 +2,7 @@
 
 // ng build --prod --aot=true --buildOptimizer=true
 //   apiUrl: 'http://localhost/hcm-back/public/index.php/api/',
-//apiUrl: 'http://sirdevapcser01.sidor.net/hcm-back/public/index.php/api/',
+
 
 /* Producción */
 
