@@ -1,0 +1,129 @@
+<!--FILA 1-->
+<div class="row">
+  <div class="col-md-2">
+  </div>
+
+  <div class="col-md-4">
+      <p-card>
+        <button pButton 
+                type="button" 
+                label="  " 
+                class="p-button-text" 
+                (click)="vermenu(1)"
+                [disabled]="activarCitas"
+                style="width: 300px; height: 50px;"
+        >
+            <img src="assets/dist/img/citas_rbg.png"   width="70">
+            &nbsp;&nbsp;&nbsp;<b>CITAS MEDICAS</b> 
+        </button>
+      </p-card>
+  </div>
+
+  <div class="col-md-4">
+    <p-card>
+      <button pButton   
+              type="button" 
+              label="  " 
+              class="p-button-text" 
+              style="width: 300px; height: 50px;"
+              [disabled]="activarTriaje"
+              (click)="vermenu(7)"
+      >
+        <img src="assets/dist/img/triaje_rbg.png"   width="70">
+        &nbsp;&nbsp;&nbsp;<b>TRIAJE</b>  
+
+      </button>
+    </p-card>
+  </div>
+
+  <div class="col-md-2">
+  </div>
+</div>
+
+<br>
+
+
+<!--FILA 2-->
+<div class="row">
+  <div class="col-md-2">
+  </div>
+
+  <div class="col-md-4">
+    <p-card>
+      <button pButton 
+              type="button" 
+              label="  " 
+              class="p-button-text" 
+              style="width: 300px; height: 50px;"
+              (click)="vermenu(2)"
+              [disabled]="activarEmergencia"
+              disabled="true"
+      >
+        <img src="assets/dist/img/emergencia_rgb.png"   width="70">
+        &nbsp;&nbsp;&nbsp;<b>EMERGENCIAS</b> 
+      </button>
+    </p-card>
+  </div>
+
+  <div class="col-md-4">
+    <p-card>
+      <button pButton 
+              type="button" 
+              label="  " 
+              class="p-button-text" 
+              style="width: 300px; height: 50px;"
+              (click)="vermenu(3)"
+              [disabled]="activarElectivas"
+      >
+        <img src="assets/dist/img/electivas_rbg.png"   width="70">
+        &nbsp;&nbsp;&nbsp;<b>PROCEDIMIENTOS <br>ELECTIVOS </b> 
+      </button>
+    </p-card>
+  </div>
+
+  <div class="col-md-2">
+  </div>
+</div>
+
+<br>
+<!--FILA 3-->
+<div class="row">
+  <div class="col-md-2">
+  </div>
+
+  <div class="col-md-4">
+    <p-card>
+      <button pButton  
+              type="button" 
+              label="  " 
+              class="p-button-text" 
+              style="width: 250px; height: 50px;"
+              (click)="vermenu(5)"
+              [disabled]="activarFunerarios"
+      >
+        <img src="assets/dist/img/funerarios.png"   width="70">
+        &nbsp;&nbsp;&nbsp;<b>FUNERARIOS</b> 
+      </button>
+    </p-card>
+  </div>
+
+  <div class="col-md-4 text-center">
+    <p-card>
+      <button pButton   
+              type="button" 
+              label="  " 
+              class="p-button-text text-center" 
+              style="width: 300px; height: 50px;"
+              (click)="salir()"
+      >
+         
+       <b>SALIR</b>  
+
+      </button>
+    </p-card>
+  </div>
+
+  <div class="col-md-2">
+  </div>
+</div>
+

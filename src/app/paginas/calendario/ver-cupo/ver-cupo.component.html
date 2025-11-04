@@ -1,0 +1,100 @@
+<app-ayuda
+  [helpTitle]="'Información del cupo'"
+  [displayHelp]="displayHelp"
+  [resizable]="false"
+  [maximizable]="false"
+  [draggable]="false"
+  [overflow]="'visible'"
+  [width]="'350px'"
+  [height]="''"
+  [selectFlag]="selectFlag"
+  [saveFlag]="false"
+  (displayEvent)="close()"
+  (selectEvent)="select()"
+>
+  <form [formGroup]="form" novalidate inputs>
+    <div class="p-fluid p-formgrid p-grid">
+      <div class="p-field p-col-12 p-md-6">
+        <label for="turno">Turno</label>
+        <p-dropdown
+          placeholder="Seleccionar"
+          [filter]="true"
+          [resetFilterOnHide]="true"
+          [showClear]="true"
+          formControlName="turno"
+          [options]="turnos"
+          [(ngModel)]="results.turno_id"
+          [disabled]="true"
+        ></p-dropdown>
+      </div>
+      <div class="p-field p-col-12 p-md-6">
+        <label for="fecha">Fecha</label>
+        <p-calendar
+          formControlName="fecha"
+          [(ngModel)]="results.fecha"
+          [locale]="es"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          required
+          [disabled]="true"
+        ></p-calendar>
+      </div>
+      <div class="p-field p-col-12 p-md-6">
+        <label for="cupos">Cupos</label>
+        <input
+          type="text"
+          pInputText
+          formControlName="cupos"
+          [(ngModel)]="results.cupos"
+          disabled
+        />
+      </div>
+      <div class="p-field p-col-12 p-md-6">
+        <label for="cupos_asignados">Cupos asignados</label>
+        <input
+          type="text"
+          pInputText
+          formControlName="cupos_asignados"
+          [(ngModel)]="results.cupos_asignados"
+          disabled
+        />
+      </div>
+      <div class="p-field p-col-12">
+        <label for="descripcion">Clínica</label>
+        <p-dropdown
+          placeholder="Seleccionar"
+          [filter]="true"
+          [resetFilterOnHide]="true"
+          [showClear]="true"
+          formControlName="sitio"
+          [options]="sitios"
+          [(ngModel)]="results.sitio_id"
+          [disabled]="true"
+        ></p-dropdown>
+      </div>
+      <div class="p-field p-col-12">
+        <label for="servicio">Servicio</label>
+        <p-dropdown
+          placeholder="Seleccionar"
+          [filter]="true"
+          [resetFilterOnHide]="true"
+          [showClear]="true"
+          formControlName="servicio"
+          [options]="servicios"
+          [(ngModel)]="results.servicio_id"
+          [disabled]="true"
+        ></p-dropdown>
+      </div>
+      <div class="p-field p-col-12">
+        <label for="horario">Horario</label>
+        <input
+          type="text"
+          pInputText
+          formControlName="horario"
+          [(ngModel)]="results.horario"
+          disabled
+        />
+      </div>
+    </div>
+  </form>
+</app-ayuda>

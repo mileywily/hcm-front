@@ -1,0 +1,220 @@
+<p-toolbar styleClass="p-mb-4">
+  <ng-template pTemplate="left">
+    <button
+      pButton
+      pRipple
+      label="Nuevo"
+      icon="pi pi-plus"
+      class="p-button-accion p-mr-2"
+      (click)="openNew()"
+    ></button>
+    <button
+      pButton
+      pRipple                                                                                                                                                              
+      label="Borrar"
+      icon="pi pi-trash"
+      class="p-button-danger p-mr-2"
+      (click)="deleteSelectedItems()"
+      [disabled]="!selectedRegistros || !selectedRegistros.length"
+    ></button>
+    <button
+               pButton
+               pRipple
+               label="Exportar"
+               icon="pi pi-file-excel"
+               class="p-button-success p-mr-2"
+              (click)="exportExcel()"
+              [disabled]="!gruposExamenes.length">
+
+               </button>
+  </ng-template>
+</p-toolbar>
+
+<p-table
+  #dt
+  [columns]="cols"
+  [value]="gruposExamenes"
+  [rows]="10"
+  [paginator]="true"
+  [(selection)]="selectedRegistros"
+  [rowHover]="true"
+  dataKey="grupo_examen_id"
+  editMode="row"
+  scrollHeight="500px"
+  selectionMode="single"
+  
+  [globalFilterFields]="['grupo_id','grupo','name']"
+  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+  [showCurrentPageReport]="true"
+>
+  <ng-template pTemplate="caption">  
+    <div class="p-d-flex p-ai-center p-jc-between p-mb-2">
+      <h5 class="p-m-1">Examenes por Grupo</h5>
+    </div>
+
+    <div class="p-grid">
+      <div class="p-col">
+        <p-dropdown
+          [autoWidth]="false"
+          [style]="{ width: '100%' }"
+          [options]="grupos"
+          [(ngModel)]="grupoSelected"
+          placeholder="Seleccionar Grupo"
+          (onChange)="consult()"
+          [filter]="true"
+          [resetFilterOnHide]="true"
+          [showClear]="true" 
+          class="ng-dirty ng-invalid"
+        >
+        </p-dropdown>
+      </div>
+
+      <div class="p-col p-text-right">
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="dt.filterGlobal($event.target.value, 'contains')"
+            placeholder="Buscar..."
+          />
+        </span>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th style="width: 3rem" [ngStyle]="{ width: '5%' }" class="text-center">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+      <th
+        class="text-center"
+        *ngFor="let col of columns"
+        pResizableColumn
+        [pSortableColumn]="col.field"
+        [ngStyle]="{ width: col.width }"
+      >
+        {{ col.header }}
+      </th>
+      <th [ngStyle]="{ width: '20%' }" class="text-center">Acciones</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <td style="width: 3em" [ngStyle]="{ width: '5%' }" class="text-center">
+        <a href="#" [pRowToggler]="rowData">
+          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+        </a>
+      </td>
+      <td *ngFor="let col of columns" class="text-center">
+        {{ rowData[col.field] }}
+      </td>
+      <td class="text-center">
+        <button
+          pButton
+          pRipple
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-accion p-mr-2"
+          (click)="edit(rowData)"
+        ></button>
+        <button
+          pButton
+          pRipple
+          icon="pi pi-trash"
+          class="p-button-rounded p-button"
+          (click)="confirmDelete(rowData)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="summary">
+    <div class="p-d-flex p-ai-center p-jc-between">
+      En total hay
+      {{ gruposExamenes? gruposExamenes.length : 0 }}
+      examenes.
+    </div>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  [(visible)]="displayDialog"
+  [style]="{ width: '450px' }"
+  [(header)]="tituloDialogo"
+  [modal]="true"
+  styleClass="p-fluid"
+  [closable]="false"
+  [contentStyle]="{ overflow: 'visible' }"
+>
+  <ng-template pTemplate="content">
+
+    <form [formGroup]="form" novalidate>
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12">
+          <label for="grupo">Grupo</label>
+          <p-dropdown
+            formControlName="grupo"
+            [options]="grupos"
+            [(ngModel)]="grupoExamen.grupo_id"
+            placeholder="Seleccionar examen"
+            [filter]="true"
+            [resetFilterOnHide]="true"
+           (onChange)="fullDropdownExamenes()"
+            autofocus
+            required
+          >
+          </p-dropdown>
+          <small
+            class="p-invalid"
+            *ngIf="submitted && form.get('grupoExamen').hasError('required')"
+            >* Campo requerido</small
+          >
+        </div>
+        <div class="p-field p-col-12">
+          <label for="examen">Examen*</label>
+          <p-dropdown
+            formControlName="examen"
+            [options]="examenes"
+            [(ngModel)]="grupoExamen.examen_id"
+            placeholder="Seleccionar examen"
+            [filter]="true"
+            [resetFilterOnHide]="true"
+            autofocus
+            required
+          >
+          </p-dropdown>
+          <small
+            class="p-invalid"
+            *ngIf="submitted && form.get('examen').hasError('required')"
+            >* Campo requerido</small
+          >
+        </div>
+
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancelar"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="close()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      label="Guardar"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="save()"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<app-toast></app-toast>
+
+<app-confirm-dialog></app-confirm-dialog>

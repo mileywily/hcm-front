@@ -1,0 +1,122 @@
+
+<div class="row">
+    <div class="col-md-3">
+      <p-card>
+        <app-title title="{{ title }}"></app-title>
+  
+        <div class="p-fluid">
+          <form [formGroup]="form" novalidate>
+            <div class="form-group">
+              <label for="proveedor">Proveedor:</label>
+              <p-dropdown
+                placeholder="Seleccionar"
+                [filter]="true"
+                [resetFilterOnHide]="true"
+                formControlName="proveedor"
+                [(ngModel)]="datos.proveedor_id"
+                [options]="proveedores"
+                (onChange)="change();"
+                [disabled]="flag"
+              ></p-dropdown>
+            </div>
+            <div class="form-group" *ngIf="this.tipoAtencionId != 4">
+              <label for="grupo">Grupo:</label>
+              <p-dropdown
+                placeholder="Seleccionar"
+                [filter]="true"
+                [resetFilterOnHide]="true"
+                formControlName="grupo"
+                [options]="grupos"
+                [(ngModel)]="datos.grupo_id"
+                (onChange)="dropdownServicios();change();"
+                [disabled]="flag"
+              ></p-dropdown>
+            </div>
+            <div class="form-group">
+              <label for="servicio">Servicio:</label>
+              <p-dropdown
+                placeholder="Seleccionar"
+                [filter]="true"
+                [resetFilterOnHide]="true"
+                formControlName="servicio"
+                [options]="servicios"
+                [(ngModel)]="datos.servicio_id"
+                (onChange)="change()"
+                [disabled]="flag"
+              ></p-dropdown>
+            </div>
+            <div class="form-group">
+              <label for="turno">Turno:</label>
+              <p-dropdown
+                placeholder="Seleccionar"
+                [filter]="true"
+                [resetFilterOnHide]="true"
+                [showClear]="true"
+                formControlName="turno"
+                [options]="turnos"
+                [(ngModel)]="datos.turno_id"
+                (onChange)="consult()"
+              ></p-dropdown>
+            </div>
+          </form>
+          <br />
+        </div>
+  
+        <ng-template pTemplate="footer">
+          <p-button
+            (click)="back()"
+            pTooltip="Volver"
+            tooltipPosition="right"
+            [hidden]="!flag"
+            icon="pi pi-arrow-left"
+          ></p-button>
+        </ng-template>
+      </p-card>
+    </div>
+    <div class="col-md-9">
+      <p-card>
+        <full-calendar [options]="calendarOptions"></full-calendar>
+        &nbsp;
+        <div class="p-d-flex p-jc-between">
+          <div>
+            <div class="p-formgroup-inline">
+              <div class="p-field-checkbox">
+                <i
+                  class="fas fa-square"
+                  style="font-size: 1.5rem; color: red"
+                ></i>
+                <label>Sin Cupo</label>
+              </div>
+              <div class="p-field-checkbox">
+                <i
+                  class="fas fa-square"
+                  style="font-size: 1.5rem; color: green"
+                ></i>
+                <label>Cupos disponibles</label>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p-button
+              icon="pi pi-replay"
+              class="mr-2"
+              pTooltip="Refrescar calendario"
+              tooltipPosition="right"
+              (click)="consult()"
+              [disabled]="!datos.proveedor_id"
+            ></p-button>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </div>
+  
+  <app-ver-cupo-triaje
+    (displayEvent)="displayChange($event)"
+    (selectEvent)="selectedC($event)"
+    [displayHelp]="displayHelp"
+    [params]="selected"
+    [disabledFlag]="disabledFlag"
+  >
+  </app-ver-cupo-triaje>
+  

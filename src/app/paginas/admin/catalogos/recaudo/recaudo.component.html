@@ -1,0 +1,176 @@
+<p-toolbar styleClass="p-mb-4">
+  <ng-template pTemplate="left">
+    <button
+      pButton
+      pRipple
+      label="Nuevo"
+      icon="pi pi-plus"
+      class="p-button-accion p-mr-2"
+      (click)="openNew()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      label="Borrar"
+      icon="pi pi-trash"
+      class="p-button-danger"
+      (click)="deleteSelectedItems()"
+      [disabled]="!selectedRegistros || !selectedRegistros.length"
+    ></button>
+  </ng-template>
+</p-toolbar>
+
+<p-table
+  #dt
+  [columns]="cols"
+  [value]="recaudos"
+  [rows]="10"
+  [paginator]="true"
+  [(selection)]="selectedRegistros"
+  dataKey="recaudo_id"
+  editMode="row"
+  [rowHover]="true"
+  scrollHeight="500px"
+  selectionMode="single"
+  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+  [showCurrentPageReport]="true"
+>
+  <ng-template pTemplate="caption">
+    <div class="p-d-flex p-ai-center p-jc-between">
+      <h5 class="p-m-0">Recaudos</h5>
+      <span class="p-input-icon-left">
+        <i class="pi pi-search"></i>
+        <input
+          pInputText
+          type="text"
+          (input)="dt.filterGlobal($event.target.value, 'contains')"
+          placeholder="Buscar..."
+        />
+      </span>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th style="width: 3rem" [ngStyle]="{ width: '5%' }" class="text-center">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+      <th
+        class="text-center"
+        *ngFor="let col of columns"
+        pResizableColumn
+        [pSortableColumn]="col.field"
+        [ngStyle]="{ width: col.width }"
+      >
+        {{ col.header }}
+      </th>
+      <th [ngStyle]="{ width: '20%' }" class="text-center">Acciones</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <td style="width: 3em" [ngStyle]="{ width: '5%' }" class="text-center">
+        <a href="#" [pRowToggler]="rowData">
+          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+        </a>
+      </td>
+      <td *ngFor="let col of columns" class="text-center">
+        {{ rowData[col.field] }}
+      </td>
+      <td class="text-center">
+        <button
+          pButton
+          pRipple
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-accion p-mr-2"
+          (click)="edit(rowData)"
+        ></button>
+        <button
+          pButton
+          pRipple
+          icon="pi pi-trash"
+          class="p-button-rounded p-button"
+          (click)="confirmDelete(rowData)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="summary">
+    <div class="p-d-flex p-ai-center p-jc-between">
+      En total hay {{ recaudos ? recaudos.length : 0 }} recaudos.
+    </div>
+  </ng-template>
+</p-table>
+
+<p-dialog
+  [(visible)]="displayDialog"
+  [style]="{ width: '450px' }"
+  [(header)]="tituloDialogo"
+  [modal]="true"
+  styleClass="p-fluid"
+  [closable]="false"
+  [contentStyle]="{ overflow: 'visible' }"
+>
+  <ng-template pTemplate="content">
+    <form [formGroup]="form" novalidate>
+      <div class="p-field">
+        <label for="nombre">Nombre*</label>
+        <input
+          type="text"
+          formControlName="nombre"
+          pInputText
+          id="nombre"
+          [(ngModel)]="recaudo.nombre"
+          autofocus
+          required
+        />
+        <small
+          class="p-invalid"
+          *ngIf="submitted && form.get('nombre').hasError('required')"
+          >* Campo requerido</small
+        >
+      </div>
+
+      <div class="p-field">
+        <label for="descripcion">Descripción*</label>
+        <input
+          type="text"
+          formControlName="descripcion"
+          pInputText
+          id="descripcion"
+          [(ngModel)]="recaudo.descripcion"
+          autofocus
+          required
+        />
+        <small
+          class="p-invalid"
+          *ngIf="submitted && form.get('descripcion').hasError('required')"
+          >* Campo requerido
+          </small
+        >
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancelar"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="close()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      label="Guardar"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="save()"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+<app-toast></app-toast>
+
+<app-confirm-dialog></app-confirm-dialog>

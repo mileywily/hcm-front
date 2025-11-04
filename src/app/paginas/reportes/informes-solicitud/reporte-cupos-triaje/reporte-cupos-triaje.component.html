@@ -1,0 +1,173 @@
+<p-card>
+    <app-title title={{title}}></app-title>
+    
+    <p> Indique los siguientes datos para la búsqueda:</p>
+    <div class="p-formgroup-inline">
+      <div class="p-field">
+        <label for="proveedor" class="p-sr-only">Proveedor</label>
+        <p-dropdown [showClear]="true"  
+                    [filter]="true" 
+                    [options]="proveedores" 
+                    placeholder="Proveedor" 
+                    [(ngModel)]="proveedorSelected"
+                    required 
+                    [disabled]="flag"
+                    (onChange)="proveedorOnchange()">
+        </p-dropdown>
+    </div>
+    <div class="p-field">
+      <label for="especialidad"
+      class="p-sr-only">Especialidad</label>
+      <p-dropdown
+      [showClear]="true"
+      [filter]="true"
+      [options]="especialidades"
+      placeholder="Especialidad"
+      (onChange)="dropdownMedicos();dropdownServicios();"
+      [(ngModel)]="especialidadSelected"
+      required  [disabled]="flag"></p-dropdown>
+  </div>
+
+
+        <div class="p-field">
+          <label for="medico"  class="p-sr-only">Médico</label>
+          <p-dropdown [showClear]="true"
+          [filter]="true"
+          [options]="medicos"
+          required
+          placeholder="Medico"
+          [(ngModel)]="orden.medico_id"
+    
+          required  [disabled]="flag"
+          (onChange)="medicoOnchange()"></p-dropdown>
+        </div>
+
+
+        <div class="p-field">
+          <label for="grupo" class="p-sr-only">Grupo de Servicios</label>
+          <p-dropdown [showClear]="true" 
+                      [filter]="true"
+                      [options]="grupos"
+                      placeholder="Grupo"
+                      [(ngModel)]="grupoSelected"
+                      (onChange)="dropdownServiciosPorGrupo();" 
+                       required
+                      [disabled]="flag"
+          >
+          </p-dropdown>
+        </div>
+
+        <div class="p-field">
+          <label for="servicio" class="p-sr-only">Servicio</label>
+          <p-dropdown [showClear]="true" 
+                      [filter]="true" 
+                      [options]="servicios"
+                       placeholder="Servicio"
+                      [(ngModel)]="orden.servicio_id" 
+                      >
+          </p-dropdown>
+        </div>
+        <div class="p-field">
+          <label for="turno"  class="p-sr-only">Turno*</label>
+          <p-dropdown  [showClear]="true"
+                       [options]="turnos" 
+                       placeholder="Turno" 
+                       [(ngModel)]="orden.turno_id" 
+                       [disabled]="flag" >
+          </p-dropdown>
+        </div>
+    
+        <div class="p-field">
+          <label for="fecha" class="p-sr-only">Cita</label>
+          <p-calendar
+            [disabled]="flag"
+            baseZIndex="10000"
+            [locale]="es"
+            [yearNavigator]="true"
+            [monthNavigator]="true"
+            dateFormat="dd/mm/yy"
+            [showIcon]="true"
+            inputId="icon"
+            yearRange="2000:2050"
+            showButtonBar="true"
+            placeholder="Cita"
+            [(ngModel)]="fecha_cita"
+          >
+          </p-calendar>
+        </div>
+    
+        <div class="p-field">
+            <button (click)="consult()" pButton pRipple type="button"
+                label="Buscar" [disabled]="!proveedorSelected">
+            </button>
+        </div>
+        <div class="p-field">
+          <button (click)="limpiar_variables_combos()" pButton pRipple type="button"
+              label="Limpiar">
+          </button>
+      </div>
+    
+    </div>
+    <hr><br />
+    </p-card>
+    
+        <p-table [value]="reporte" sortField="id" sortMode="single" [autoLayout]="true"
+        [loading]="loading">
+          <ng-template pTemplate="caption">
+            <div class="flex">
+                <button type="button" [disabled]="habilitaExcel"  pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()" class="p-button-success mr-2"  pTooltip="XLS" tooltipPosition="bottom"></button>
+            </div>
+        </ng-template>
+    
+          <ng-template pTemplate="header">
+                <tr>
+                    <th colspan="13" > Proveedor:  {{nombre_proveedor}} </th>
+                </tr>
+                <tr>
+                    <th class="text-center" [ngStyle]="{ width: '5%' }">Nro</th>
+                    <th class="text-center" [ngStyle]="{ width: '5%' }">Cédula</th>
+                    <th class="text-center" [ngStyle]="{ width: '15%' }">Beneficiario</th>
+                    <th class="text-center" [ngStyle]="{ width: '10%' }">Cédula Titular</th>
+                    <th class="text-center" [ngStyle]="{ width: '10%' }">Nombre Titular</th>
+                    <th class="text-center" [ngStyle]="{ width: '5%' }">Orden</th>
+                    <th class="text-center" [ngStyle]="{ width: '10%' }">Grupo</th>
+                    <th class="text-center" [ngStyle]="{ width: '20%' }">Servicio</th>
+                    <th class="text-center" [ngStyle]="{ width: '10%' }">Teléfono</th>
+                    <th class="text-center" [ngStyle]="{ width: '15%' }">Fecha Solicitud</th>
+                    <th class="text-center" [ngStyle]="{ width: '15%' }">Fecha cita</th>
+                    <th class="text-center" [ngStyle]="{ width: '10%' }">Turno</th>
+                    <th class="text-center" [ngStyle]="{ width: '10%' }">Prioridad</th>
+
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex">
+                <tr>
+    
+                    <td class="text-center" *ngIf="rowGroupMetadata[rowData.id].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.id].size">
+                        {{rowData.id}}
+                    </td>
+                    <td *ngIf="rowGroupMetadata[rowData.id].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.id].size">
+                      {{rowData.cedula_beneficiario}}
+                  </td>
+                  <td *ngIf="rowGroupMetadata[rowData.id].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.id].size">
+                    {{rowData.nombre_beneficiario}}
+                  </td>
+                  <td *ngIf="rowGroupMetadata[rowData.id].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.id].size">
+                    {{rowData.cedula_titular}}
+                  </td>
+                  <td *ngIf="rowGroupMetadata[rowData.id].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.id].size">
+                    {{rowData.nombre_titular}}
+                  </td>
+                    <td class="text-center">{{rowData.atencion_id}}</td>
+                    <td>{{rowData.grupo}}</td>
+                    <td>{{rowData.servicio_nombre}}</td>
+                    <td>{{rowData.telefono}}</td>
+                    <td class="text-center">{{rowData.fecha_atencion}}</td>
+                    <td class="text-center">{{rowData.fecha_cita}}</td>
+                    <td class="text-center">{{rowData.turno}}</td>
+                    <td class="text-center">{{rowData.prioridad_id}}</td>
+                </tr>
+            </ng-template>
+        </p-table>
+        <!-- Notificación -->
+    <app-toast></app-toast>

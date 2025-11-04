@@ -1,0 +1,254 @@
+<div class="row">
+    <div class="col-md-4">
+      <p-card>
+        <app-title title="{{ title }}"></app-title>
+        <div class="p-fluid">
+          <form [formGroup]="myForm" novalidate>
+            <div class="p-fluid p-formgrid p-grid">
+              <div class="p-field p-col-12">
+                <label for="proveedor_id">Proveedor*</label>
+                <p-dropdown
+                  formControlName="proveedor_id"
+                  placeholder="Seleccionar"
+                  [filter]="true"
+                  [resetFilterOnHide]="true"
+                  required
+                  (onChange)="consult()"
+                  [options]="proveedores"
+                  [(ngModel)]="datos.proveedor_id"
+                ></p-dropdown>
+                <small
+                  class="p-invalid"
+                  *ngIf="submitted && myForm.get('proveedor_id').hasError('required')"
+                >
+                  Proveedor es requerido.
+                </small>
+              </div>
+  
+              <div class="p-field p-col-12"  *ngIf="this.tipoAtencionId != 4">
+                <label for="grupo_id">Grupo*</label>
+                <p-dropdown
+                  itemSize="30"
+                  formControlName="grupo_id"
+                  placeholder="Seleccionar"
+                  [filter]="true"
+                  [resetFilterOnHide]="true"
+                  required
+                  [options]="grupos"
+                  [(ngModel)]="datos.grupo_id"
+                  (onChange)="consult()"
+                  (onChange)="dropdownServicios();"
+                  [disabled]="!flag"
+                ></p-dropdown>
+                <small
+                  class="p-invalid"
+                  *ngIf="
+                    submitted &&
+                    myForm.get('grupo_id').hasError('required')
+                  "
+                >
+                  Grupo es requerido.
+                </small>
+              </div>
+  
+              <div class="p-field p-col-12">
+                <label for="servicio_id">Servicio*</label>
+                <p-dropdown
+                  formControlName="servicio_id"
+                  placeholder="Seleccionar"
+                  [resetFilterOnHide]="true"
+                  [filter]="true"
+                  required
+                  [options]="servicios"
+                  (onChange)="consult();"
+                  [(ngModel)]="datos.servicio_id"
+                  [disabled]="!flag"
+                ></p-dropdown>
+                <small
+                  class="p-invalid"
+                  *ngIf="
+                    submitted && myForm.get('servicio_id').hasError('required')
+                  "
+                >
+                  Servicio es requerido.
+                </small>
+              </div>
+  
+              <div class="p-field p-col-12">
+                <label for="fecha">Fecha*</label>
+                <p-calendar
+                  formControlName="fecha"
+                  [locale]="es"
+                  dateFormat="dd/mm/yy"
+                  [showIcon]="true"
+                  required
+                  selectionMode="range"
+                  [readonlyInput]="true"
+                  inputId="range"
+                  [disabled]="false"
+                  [(ngModel)]="rangeDates"
+                  [disabled]="true"
+                ></p-calendar>
+                <small
+                  class="p-invalid"
+                  *ngIf="submitted && myForm.get('fecha').hasError('required')"
+                >
+                  Seleccione una fecha o rango de fecha en el calendario.
+                </small>
+              </div>
+  
+              <div class="p-field">
+                <label for="turno_id">Turno*</label>
+                <p-dropdown
+                  formControlName="turno_id"
+                  placeholder="Seleccionar"
+                  [filter]="true"
+                  [resetFilterOnHide]="true"
+                  required
+                  [options]="turnos"
+                  [(ngModel)]="datos.turno_id"
+                ></p-dropdown>
+                <small
+                  class="p-invalid"
+                  *ngIf="submitted && myForm.get('turno_id').hasError('required')"
+                >
+                  Turno es requerido.
+                </small>
+              </div>
+              <div class="p-field p-col">
+                <label for="cupos">Cupos*</label>
+                <p-inputNumber
+                  [(ngModel)]="datos.cupos"
+                  formControlName="cupos"
+                  [showButtons]="true"
+                  [min]="datos.cupos == datos.cupos_asignados ? datos.cupos : 1"
+                  required
+                >
+                </p-inputNumber>
+                <small
+                  class="p-invalid"
+                  *ngIf="submitted && myForm.get('cupos').hasError('required')"
+                >
+                  Cupos es requerido.
+                </small>
+              </div>
+              <div class="p-field p-col">
+                <label for="cupos_asignados">Asignados</label>
+                <p-inputNumber
+                  [(ngModel)]="datos.cupos_asignados"
+                  formControlName="cupos_asignados"
+                  [showButtons]="true"
+                  [disabled]="true"
+                >
+                </p-inputNumber>
+              </div>
+              <div class="p-field p-col-12">
+                <label for="horario">Horario</label>
+                <input
+                  formControlName="horario"
+                  pInputText
+                  type="text"
+                  uppercase
+                  [(ngModel)]="datos.horario"
+                />
+              </div>
+            </div>
+          </form>
+        </div>
+        <ng-template pTemplate="footer">
+          <div class="p-d-flex p-jc-between">
+            <div>
+              <p-button
+                (click)="register()"
+                [style]="{ 'margin-left': '.5em' }"
+                pTooltip="Registrar cupo"
+                tooltipPosition="right"
+                [hidden]="flag"
+                icon="pi pi-arrow-left"
+              ></p-button>
+            </div>
+            <div>
+              <p-button
+                label="Registrar"
+                (click)="save()"
+                [hidden]="!flag"
+              ></p-button>
+              <p-button
+                (click)="clearAll()"
+                icon="pi pi-trash"
+                [style]="{ 'margin-left': '.5em' }"
+                pTooltip="Limpiar campos"
+                tooltipPosition="right"
+                [hidden]="!flag"
+              ></p-button>
+              <!--p-button
+                label="Guardar"
+                (click)="edit()"
+                [hidden]="!flag"
+              ></p-button!-->
+              <p-button
+                (click)="confirmDeleteOne()"
+                icon="pi pi-times"
+                [style]="{ 'margin-left': '.5em' }"
+                pTooltip="Eliminar registro"
+                tooltipPosition="right"
+                [hidden]="!flag"
+              ></p-button>
+            </div>
+          </div>
+        </ng-template>
+      </p-card>
+      <br />
+    </div>
+  
+    <div class="col-md-8">
+      <p-card>
+        <full-calendar [options]="calendarOptions"></full-calendar>
+        &nbsp;
+        <div class="p-d-flex p-jc-between">
+          <div>
+            <div class="p-formgroup-inline">
+              <div class="p-field-checkbox">
+                <i
+                  class="fas fa-square"
+                  style="font-size: 1.5rem; color: red"
+                ></i>
+                <label>Sin Cupo</label>
+              </div>
+              <div class="p-field-checkbox">
+                <i
+                  class="fas fa-square"
+                  style="font-size: 1.5rem; color: green"
+                ></i>
+                <label>Cupos disponibles</label>
+              </div>
+            </div>
+          </div>
+          <div>
+            <p-button
+              icon="pi pi-times"
+              class="mr-2"
+              pTooltip="Limpiar calendario en las fechas sombreadas"
+              tooltipPosition="right"
+              (click)="confirmDeleteRange()"
+              [disabled]="!rangeDatesToDelete"
+            ></p-button>
+            <p-button
+              icon="pi pi-replay"
+              class="mr-2"
+              pTooltip="Refrescar calendario"
+              tooltipPosition="right"
+              (click)="consult()"
+              [disabled]="!datos.medico_id"
+            ></p-button>
+          </div>
+        </div>
+      </p-card>
+    </div>
+  </div>
+  
+  <app-toast></app-toast>
+  
+  <app-block-ui [blocked]="blocked"></app-block-ui>
+  
+  <app-confirm-dialog></app-confirm-dialog>

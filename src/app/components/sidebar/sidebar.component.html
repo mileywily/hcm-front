@@ -1,0 +1,412 @@
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+
+    <!-- Logo -->
+    <a class="brand-link">
+        <span style="opacity: .8; padding-right: 8px; padding-left:20px;"></span>
+    </a>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu">
+                <!-- <li *ngIf="itemRolCatalog" class="nav-item"> -->
+                <li class="nav-item">
+                    <a [routerLink]="['catalogos']" routerLinkActive="active" class="nav-link">
+                        <i class="nav-icon pi pi-th-large nav-icon"></i>
+                        <p>Catálogos</p>
+                    </a>
+                </li>
+
+                <!--<li *ngIf="itemRolBeneficiarios" class="nav-item">-->
+                <li class="nav-item">
+                  <a [routerLink]="['consultar-beneficiario']" routerLinkActive="active" class="nav-link">
+                      <i class="pi pi-id-card nav-icon"></i>
+                      <p>Beneficiarios</p>
+                  </a>
+                </li>
+
+                <!--MENU DE ASIGNACION DE CUPOS-->
+                <li class="nav-item has-treeview">
+                  <a class="nav-link">
+                    <i class="pi pi-ticket  nav-icon"></i>
+                    <p> 
+                      Asignación de cupos
+                      <i class="fas fa-angle-left right"></i>
+                      <span class="badge badge-info right"></span>
+                    </p>
+                  </a> 
+
+                  <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a
+                        [routerLink]="['registrar-cupos']"
+                        routerLinkActive="active"
+                        class="nav-link">
+                        <i class="pi pi-check  nav-icon"  style="font-size: 0.5rem"></i>
+                        <p>Citas Médicas</p>
+                      </a>
+                      
+                    </li>
+
+                    <li class="nav-item">
+                      <a
+                        [routerLink]="['registrar-cupos2']"
+                        routerLinkActive="active"
+                        class="nav-link">
+                        <i class="pi pi-check  nav-icon" style="font-size: 0.5rem"></i>
+                        <p>Estudios Especiales</p>
+                      </a>
+                    </li>
+
+                    <li *ngIf="itemRolModificarSolicitud" class="nav-item">
+                        <a
+                        [routerLink]="['registrar-cupos3']"
+                        routerLinkActive="active"
+                        class="nav-link">
+                        <i class="pi pi-check  nav-icon" style="font-size: 0.5rem"></i>
+                        <p>Imagen</p>
+                      </a>
+                    </li>
+
+
+                    <!--<li *ngIf="itemRolCalendario" class="nav-item">-->
+                    <li class="nav-item">
+                      <a
+                        [routerLink]="['registrar-cupos4']"
+                        routerLinkActive="active"
+                        class="nav-link">
+                        <i class="pi pi-check  nav-icon" style="font-size: 0.5rem"></i>
+                        <p>Laboratorios</p>
+                      </a>
+                    </li>
+                  </ul>
+              </li>
+              <!--FIN MENU DE ASIGNACION DE CUPOS-->
+
+
+              <!--MENU DE SOLICITUDES CITAS MEDICAS-->
+              <li class="nav-item has-treeview">
+                  <a class="nav-link">
+                    <i class="nav-icon pi pi-phone"></i>
+                    <p> 
+                      Solicitudes Citas Médicas
+                      <i class="fas fa-angle-left right"></i>
+                      <span class="badge badge-info right"></span>
+                    </p>
+                  </a> 
+
+                  <ul class="nav nav-treeview">                  
+                    <!--<li *ngIf="itemRolNuevaSolicitud" class="nav-item">-->
+                    <li class="nav-item">
+                      <a
+                        [routerLink]="['solicitud-beneficiario','-1','-1']"
+                        routerLinkActive="active"
+                        class="nav-link"
+                      >
+                        <i class="pi pi-file  nav-icon"  style="font-size: 0.8rem"></i>
+                        <p>Nueva solicitud</p>
+                      </a>
+                      
+                    </li>
+
+                    <!--<li *ngIf="itemRolModificarSolicitud" class="nav-item">-->
+                    <li class="nav-item">
+                      <a
+                        [routerLink]="['solicitud-modificar']"
+                        routerLinkActive="active"
+                        class="nav-link"
+                      >
+                        <i class="pi  pi-copy   nav-icon " style="font-size: 0.8rem"></i>
+                        <p>Modificar Solicitud</p>
+                      </a>
+                    </li>
+
+
+                    <!--<li *ngIf="itemRolModificarSolicitud" class="nav-item">-->
+                      <li *ngIf="itemRolModificarSolicitud" class="nav-item">
+                      <a
+                        [routerLink]="['orden-modificar']"
+                        routerLinkActive="active"
+                        class="nav-link"
+                      >
+                        <i class="pi  pi-pencil   nav-icon " style="font-size: 0.8rem"></i>
+                        <p>Modificar Ordenes</p>
+                      </a>
+                    </li>
+
+
+                    <!--<li *ngIf="itemRolCalendario" class="nav-item">
+                    <li class="nav-item">
+                      <a
+                        [routerLink]="['calendario', 'C']"
+                        routerLinkActive="active"
+                        class="nav-link"
+                      >
+                        <i class="pi pi-calendar nav-icon"></i>
+                        <p>Calendario</p>
+                      </a>
+                    </li>-->
+                  </ul>
+              </li>
+              <!--FIN MENU DE SOLICITUDES-->
+
+              <!--MENU DE SOLICITUDES TRIAJE-->
+              <li class="nav-item has-treeview">
+                <a class="nav-link">
+                  <i class="nav-icon pi pi-user-plus"></i>
+                  <p>
+                    Solicitudes Triaje
+                    <i class="fas fa-angle-left right"></i>
+                    <span class="badge badge-info right"></span>
+                  </p>
+                </a>
+                
+                <ul class="nav nav-treeview">
+
+                  <!--<li *ngIf="itemRolNuevaSolicitud" class="nav-item">-->
+                  <li class="nav-item">
+                    <a
+                      [routerLink]="['solicitud-beneficiario','-1','-1']"
+                      routerLinkActive="active"
+                      class="nav-link"
+                    >
+                      <i class="pi pi-file  nav-icon" style="font-size: 0.8rem"></i>
+                      <p>Nueva solicitud</p>
+                    </a>
+                  </li>
+
+                  <!-- <li *ngIf="itemRolModificarSolicitud" class="nav-item"> -->
+                  <li class="nav-item">
+                    <a
+                      [routerLink]="['solicitud-modificar']"
+                      routerLinkActive="active"
+                      class="nav-link"
+                    >
+                      <i class="pi  pi-copy   nav-icon " style="font-size: 0.8rem"></i>
+                      <p>Modificar Solicitud</p>
+                    </a>
+                  </li>
+
+                  <!--<li *ngIf="itemRolModificarSolicitud" class="nav-item">-->
+                  <li  class="nav-item">
+                    <a
+                      [routerLink]="['orden-modificar']"
+                      routerLinkActive="active"
+                      class="nav-link"
+                    >
+                      <i class="pi  pi-pencil   nav-icon " style="font-size: 0.8rem"></i>
+                      <p>Modificar Ordenes</p>
+                    </a>
+                  </li>
+                </ul>
+            </li>
+            <!--FIN MENU DE SOLICITUDES TRIAJE-->
+
+            <!--MENU DE CALENDARIO DE CUPOS-->
+            <li class="nav-item has-treeview">
+              <a class="nav-link">
+                <i class="pi pi-calendar nav-icon"></i>
+                <p> 
+                  Calendario cupos
+                  <i class="fas fa-angle-left right"></i>
+                  <span class="badge badge-info right"></span>
+                </p>
+              </a> 
+
+              <ul class="nav nav-treeview">
+                <li class="nav-item">
+                  <a
+                    [routerLink]="['calendario', 'C']"
+                    routerLinkActive="active"
+                    class="nav-link"
+                  >
+                    <i class="pi pi-check  nav-icon" style="font-size: 0.5rem"></i>
+                    <p>Citas Médicas</p>
+                  </a>
+                  
+                </li>
+
+                <li class="nav-item">
+                  <a
+                    [routerLink]="['calendario2', 'C']"
+                    routerLinkActive="active"
+                    class="nav-link"
+                  >
+                    <i class="pi pi-check  nav-icon" style="font-size: 0.5rem"></i>
+                    <p>Estudios especiales</p>
+                  </a>
+                </li>
+
+                <li *ngIf="itemRolModificarSolicitud" class="nav-item">
+                  <a
+                    [routerLink]="['calendario3', 'C']"
+                    routerLinkActive="active"
+                    class="nav-link"
+                  >
+                    <i class="pi pi-check  nav-icon" style="font-size: 0.5rem"></i>
+                    <p>Imagen</p>
+                  </a>
+                </li>
+
+
+                <!--<li *ngIf="itemRolCalendario" class="nav-item">-->
+                <li class="nav-item">
+                  <a
+                    [routerLink]="['calendario4', 'C']"
+                    routerLinkActive="active"
+                    class="nav-link"
+                  >
+                    <i class="pi pi-check  nav-icon" style="font-size: 0.5rem"></i>
+                    <p>Laboratorios</p>
+                  </a>
+                </li>
+              </ul>
+          </li>
+          <!--FIN MENU DE CALENDARIOS DE CUPOS-->
+
+            <!--MENU DE CONSULTAS CITAS MEDICAS-->
+              <li class="nav-item">
+                  <a class="nav-link">
+                    <i class="nav-icon pi pi-search"></i>
+                    <p>
+                      Consultas Citas Médicas
+                      <i class="fas fa-angle-left right"></i>
+                      <span class="badge badge-info right" ></span>
+                    </p>
+                  </a>
+
+
+                  <ul  class="nav nav-treeview">
+
+                    <!--<li *ngIf="itemRolConsultaSolicitud" class="nav-item"> -->
+                    <li class="nav-item">
+                      <a
+                        [routerLink]="['servicios-solicitud']"
+                        routerLinkActive="active"
+                        class="nav-link">
+                        <i class="pi pi-bars nav-icon" style="font-size: 0.8rem"></i>
+                        <p>Solicitudes</p>
+                      </a>
+                    </li>
+
+                    <!--<li *ngIf="itemRolConsultaSolicitud" class="nav-item">-->
+                    <li  class="nav-item">
+                      <a
+                        [routerLink]="['servicios-solicitud-abiertas']"
+                        routerLinkActive="active"
+                        class="nav-link">
+                        <i class="pi pi-list nav-icon" style="font-size: 0.8rem"></i>
+                        <p>Sol./Servicios Pendientes</p>
+                      </a>
+                    </li>
+                  </ul>
+
+                  <ul class="nav nav-treeview">
+                    <!--<li *ngIf="itemRolConsultaOrden" class="nav-item">-->
+                    <li class="nav-item">
+                      <a
+                        [routerLink]="['servicios-orden']"
+                        routerLinkActive="active"
+                        class="nav-link"
+                      >
+                        <i class="pi  pi-spinner  nav-icon" style="font-size: 0.8rem"></i>
+                        <p>Ordenes</p>
+                      </a>
+                    </li>
+                  </ul>
+
+                  <ul class="nav nav-treeview">
+                  <!--<li *ngIf="itemRolConsultaMedicos" class="nav-item">-->
+                  <li  class="nav-item">
+                    <a
+                      [routerLink]="['reporte-medico']"
+                      routerLinkActive="active"
+                      class="nav-link"
+                    >
+                      <i class="pi  pi-user   nav-icon " style="font-size: 0.8rem"></i>
+                      <p>Reporte Médico</p>
+                    </a>
+                  </li>
+                </ul>
+              </li>
+            <!--FIN MENU DE CONSULTAS CITAS MEDICAS-->
+
+            <!--MENU DE CONSULTAS TRIAJE-->
+            <li class="nav-item">
+              <a class="nav-link">
+                <i class="nav-icon pi pi-search"></i>
+                <p>
+                  Consultas Triaje
+                  <i class="fas fa-angle-left right"></i>
+                  <span class="badge badge-info right"></span>
+                </p>
+              </a>
+
+              <ul  class="nav nav-treeview">
+                <!--<li *ngIf="itemRolConsultaSolicitud" class="nav-item">-->
+                <li class="nav-item">
+                  <a
+                    [routerLink]="['servicios-solicitud']"
+                    routerLinkActive="active"
+                    class="nav-link">
+                    <i class="pi pi-bars nav-icon" style="font-size: 0.8rem"></i>
+                    <p>Solicitudes</p>
+                  </a>
+                </li>
+
+                <!--<li *ngIf="itemRolConsultaSolicitud" class="nav-item">-->
+                <li class="nav-item">
+                  <a
+                    [routerLink]="['servicios-solicitud-abiertas']"
+                    routerLinkActive="active"
+                    class="nav-link">
+                    <i class="pi pi-list nav-icon" style="font-size: 0.8rem"></i>
+                    <p>Sol./Servicios Pendientes</p>
+                  </a>
+                </li>
+              </ul>
+
+              <ul class="nav nav-treeview">
+                <!--<li *ngIf="itemRolConsultaOrden" class="nav-item">-->
+                <li class="nav-item">
+                  <a
+                    [routerLink]="['servicios-orden']"
+                    routerLinkActive="active"
+                    class="nav-link"
+                  >
+                    <i class="pi  pi-spinner  nav-icon" style="font-size: 0.8rem"></i>
+                    <p>Ordenes</p>
+                  </a>
+                </li>
+              </ul>
+
+              <ul class="nav nav-treeview">
+              <!--<li *ngIf="itemRolConsultaMedicos" class="nav-item">-->
+              <li  class="nav-item">
+                <a
+                  [routerLink]="['reporte-medico']"
+                  routerLinkActive="active"
+                  class="nav-link"
+                >
+                  <i class="pi  pi-user  nav-icon " style="font-size: 0.8rem"></i>
+                  <p>Reporte Cupos</p>
+                </a>
+              </li>
+
+            </ul>
+          </li>
+         <!--FIN MENU DE CONSULTAS-->
+
+            <li class="nav-item">
+                <a [routerLink]="['login']" routerLinkActive="active" class="nav-link">
+                      <i class="nav-icon pi pi-sign-out nav-icon" ></i>
+                      <p>Salir</p>
+                </a>
+            </li>
+          </ul>
+
+        </nav>
+    </div>
+
+</aside>

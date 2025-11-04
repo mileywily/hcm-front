@@ -1,0 +1,107 @@
+<p-card>
+    <app-title title={{title}}></app-title>
+    <p> Indique los siguientes datos para la búsqueda:</p>
+    <div class="p-formgroup-inline">
+      <div class="p-field">
+        <label for="proveedor" class="p-sr-only">Proveedor</label>
+        <p-dropdown [showClear]="true"  
+                    [filter]="true" 
+                    [options]="proveedores" 
+                    placeholder="Proveedor" 
+                    [(ngModel)]="proveedorSelected"
+                    required 
+                    [disabled]="flag"
+                    (onChange)="proveedorOnchange()">
+        </p-dropdown>
+    </div>
+    <div class="p-field">
+      <label for="especialidad"
+      class="p-sr-only">Especialidad</label>
+      <p-dropdown
+      [showClear]="true"
+      [filter]="true"
+      [options]="especialidades"
+      placeholder="Especialidad"
+      (onChange)="dropdownMedicos();dropdownServicios();"
+      [(ngModel)]="especialidadSelected"
+      required  [disabled]="flag"></p-dropdown>
+  </div>
+    <div class="p-field">
+          <label for="grupo" class="p-sr-only">Grupo de Servicios</label>
+          <p-dropdown [showClear]="true" 
+                      [filter]="true"
+                      [options]="grupos"
+                      placeholder="Grupo"
+                      [(ngModel)]="grupoSelected"
+                      (onChange)="dropdownServiciosPorGrupo();" 
+                       required
+                      [disabled]="flag"
+          >
+          </p-dropdown>
+        </div>
+
+        <div class="p-field">
+          <label for="turno"  class="p-sr-only">Turno*</label>
+          <p-dropdown  [showClear]="true"
+                       [options]="turnos" 
+                       placeholder="Turno" 
+                       [(ngModel)]="orden.turno_id" 
+                       [disabled]="flag" >
+          </p-dropdown>
+        </div>
+    
+        <div class="p-field">
+          <label for="fecha" class="p-sr-only">Cita</label>
+          <p-calendar
+            [disabled]="flag"
+            baseZIndex="10000"
+            [locale]="es"
+            [yearNavigator]="true"
+            [monthNavigator]="true"
+            dateFormat="dd/mm/yy"
+            [showIcon]="true"
+            inputId="icon"
+            yearRange="2000:2050"
+            showButtonBar="true"
+            placeholder="Cita"
+            [(ngModel)]="fecha_cita"
+          >
+          </p-calendar>
+        </div>
+    
+        <div class="p-field">
+            <button (click)="consult()" pButton pRipple type="button"
+                label="Buscar" [disabled]="!proveedorSelected">
+            </button>
+        </div>
+        <div class="p-field">
+          <button (click)="limpiar_variables_combos()" pButton pRipple type="button"
+              label="Limpiar">
+          </button>
+      </div>
+    
+    </div>
+    </p-card>
+    <app-basic-table-agrupado  
+        [autoLayout]="true" 
+        [cantidad]=total 
+        [registros]='reporte' 
+        [cols]='cols' 
+        [resizable]='true' 
+        [summary]='true'
+        [loading]="loading"  
+        [exportarExcel] = 'true' 
+        [exportarPdf] = 'false' 
+        [pdfPropiedades]='pdfPropiedades'
+        [mostrar_enc] ='true'
+        [texto_encabezado]='texto_encabezado'
+        [cantidad_columnas]='10'
+        [agrupado] = 'true'
+        [rowGroupMetadata] ="rowGroupMetadata"
+        [columna_agrupado] ="columna_agrupado"
+        [virtualDummies] = "reporteMedico"
+        [mostrarHeaderGroup] = "false" 
+        [isPagination]="false"
+        [mostrar_buscar]="false">
+    </app-basic-table-agrupado>
+    <app-toast></app-toast>

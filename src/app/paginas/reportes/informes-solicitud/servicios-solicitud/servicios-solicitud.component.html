@@ -1,0 +1,139 @@
+<p-card>
+<app-title title={{title}}></app-title>
+
+<p> Indique los siguientes datos para la búsqueda:</p>
+<div class="p-fluid p-grid p-formgrid">
+    <div class="p-field p-col">
+      <label>Buscar por</label>
+      <p-selectButton
+        (onChange)="change()"
+        [options]="options"
+        [(ngModel)]="option"
+        optionLabel="label"
+        optionValue="value"
+      ></p-selectButton>
+    </div>
+    <div class="p-field p-col">
+        <label for="id">N° de Solicitud</label>
+        <input
+          type="text"
+          [disabled]="flag"
+          [(ngModel)]="request_id"
+          pInputText
+          required
+          pKeyFilter="int"
+        />
+      </div>
+      <div class="p-field p-col">
+        <label for="cedula">Cédula Titular</label>
+        <input
+          type="text"
+          pKeyFilter="int"
+          [disabled]="!flag"
+          [(ngModel)]="cedula"
+          pInputText
+          maxlength="8"
+          minlength="7"
+        />
+      </div>
+      <div class="p-field p-col">
+        <label for="fecha">Inicio</label>
+        <p-calendar
+          required
+          [disabled]="!flag"
+          baseZIndex="10000"
+          [locale]="es"
+          [yearNavigator]="true"
+          [monthNavigator]="true"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          inputId="icon"
+          yearRange="2000:2050"
+          showButtonBar="true"
+          placeholder="Seleccionar"
+          [(ngModel)]="fecha_inicio"
+        >
+        </p-calendar>
+      </div>
+      <div class="p-field p-col">
+        <label for="fecha">Fin</label>
+        <p-calendar
+          required
+          [disabled]="!flag"
+          baseZIndex="10000"
+          [locale]="es"
+          [yearNavigator]="true"
+          [monthNavigator]="true"
+          dateFormat="dd/mm/yy"
+          [showIcon]="true"
+          inputId="icon"
+          yearRange="2000:2050"
+          showButtonBar="true"
+          placeholder="Seleccionar"
+          [(ngModel)]="fecha_fin"
+        >
+        </p-calendar>
+      </div>
+      </div>
+
+<div class="p-formgroup-inline">
+    <div class="p-field">
+        <label for="especialidad" class="p-sr-only">Especialidad</label>
+        <p-dropdown [showClear]="true"
+         [options]="especialidades" 
+         placeholder="Especialidad" 
+          [(ngModel)]="especialidadSelected" 
+          required  [disabled]="!flag"></p-dropdown>
+    </div>
+
+    <div class="p-field">
+      <label for="estadoSolicitud" class="p-sr-only">Estado</label>
+      <p-dropdown [showClear]="true"
+       [options]="estadosSolicitudes" 
+       placeholder="Estado"
+       [(ngModel)]="estadoSolicitudSelected"
+       [disabled]="!flag"></p-dropdown>
+    </div>
+      
+    <div class="p-field">
+      <label for="usuario" class="p-sr-only">Usuario</label>
+      <p-dropdown [showClear]="true" 
+                  [filter]="true" 
+                  [options]="usuarios" 
+                  placeholder="Usuario"  
+                  [disabled]="!flag"
+                  [(ngModel)]="user"  >
+      </p-dropdown>
+    </div>
+    <div class="p-field">
+      <label for="domicilioSolicitud" class="p-sr-only">Domicilio</label>
+      <p-dropdown [showClear]="true"
+       [options]="domicilios" 
+       placeholder="Domicilio"
+       [(ngModel)]="domicilioSelected"
+       [disabled]="!flag"></p-dropdown>
+    </div>
+      
+
+
+    <div class="p-field">
+        <button  (click)="consult()" pButton pRipple type="button"
+            label="Buscar">
+        </button>
+    </div>
+    <div class="p-field">
+      <button (click)="limpiar_variables_combos()" pButton pRipple type="button"
+          label="Limpiar">
+      </button>
+  </div>
+</div>
+
+<hr><br />
+
+<app-basic-table [autoLayout]="true" [cantidad]=total [registros]='reporte' [cols]='cols' [resizable]='true' [summary]='true'
+    [loading]="loading"  [exportarExcel] = 'true' [exportarPdf] = 'false' [pdfPropiedades]='pdfPropiedades' >
+</app-basic-table>
+
+</p-card>
+<!-- Notificación -->
+<app-toast></app-toast>

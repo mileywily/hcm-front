@@ -1,0 +1,261 @@
+<p-card>
+    <app-title title={{titles}}></app-title>
+    
+    <p> Indique los siguientes datos para la búsqueda:</p>
+    <div class="p-fluid p-grid p-formgrid">
+        <div class="p-field p-col">
+          <label>Buscar por</label>
+          <p-selectButton
+            (onChange)="change()"
+            [options]="options"
+            [(ngModel)]="option"
+            optionLabel="label"
+            optionValue="value"
+          ></p-selectButton>
+        </div>
+        <div class="p-field p-col">
+          <label for="id">N° de Solicitud</label>
+          <input
+             type="text"
+            [disabled]="flagsolicitud"
+            [(ngModel)]="request_id"
+            pInputText
+            pKeyFilter="int"
+          />
+        </div>
+        <div class="p-field p-col">
+          <label for="ordenid">N° de Orden</label>
+          <input
+            type="text"
+            [disabled]="flagorden"
+            [(ngModel)]="orden_id"
+            pInputText
+            pKeyFilter="int"
+          />
+        </div>
+    
+          <div class="p-field p-col">
+            <label for="cedula">Cédula Titular</label>
+            <input
+              type="text"
+              pKeyFilter="int"
+              [disabled]="flag"
+              [(ngModel)]="cedula"
+              pInputText
+              maxlength="8"
+              minlength="7"
+            />
+          </div>
+          </div>
+          <div class="p-fluid p-grid p-formgrid">
+          <div class="p-field p-col">
+            <label for="fecha">Inicio Solicitud</label>
+            <p-calendar
+              required
+              [disabled]="flag"
+              baseZIndex="10000"
+              [locale]="es"
+              [yearNavigator]="true"
+              [monthNavigator]="true"
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              inputId="icon"
+              yearRange="2000:2050"
+              showButtonBar="true"
+              placeholder="Seleccionar"
+              [(ngModel)]="fecha_inicio_solicitud"
+            >
+            </p-calendar>
+          </div>
+          <div class="p-field p-col">
+            <label for="fecha">Fin Solicitud</label>
+            <p-calendar
+              required
+              [disabled]="flag"
+              baseZIndex="10000"
+              [locale]="es"
+              [yearNavigator]="true"
+              [monthNavigator]="true"
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              inputId="icon"
+              yearRange="2000:2050"
+              showButtonBar="true"
+              placeholder="Seleccionar"
+              [(ngModel)]="fecha_fin_solicitud"
+            >
+            </p-calendar>
+          </div>
+          <div class="p-field p-col">
+            <label for="fecha">Inicio Orden</label>
+            <p-calendar
+              required
+              [disabled]="flag"
+              baseZIndex="10000"
+              [locale]="es"
+              [yearNavigator]="true"
+              [monthNavigator]="true"
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              inputId="icon"
+              yearRange="2000:2050"
+              showButtonBar="true"
+              placeholder="Seleccionar"
+              [(ngModel)]="fecha_inicio"
+            >
+            </p-calendar>
+          </div>
+          <div class="p-field p-col">
+            <label for="fecha">Fin Orden</label>
+            <p-calendar
+              required
+              [disabled]="flag"
+              baseZIndex="10000"
+              [locale]="es"
+              [yearNavigator]="true"
+              [monthNavigator]="true"
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              inputId="icon"
+              yearRange="2000:2050"
+              showButtonBar="true"
+              placeholder="Seleccionar"
+              [(ngModel)]="fecha_fin"
+            >
+            </p-calendar>
+          </div>
+    </div>
+    <div class="p-formgroup-inline">
+    
+        <div class="p-field">
+            <label for="especialidad" class="p-sr-only">Especialidad</label>
+            <p-dropdown 
+               [showClear]="true" 
+               [filter]="true" 
+               [options]="especialidades"
+                placeholder="Especialidad"
+                (onChange)="dropdownMedicos();dropdownServicios();" 
+                [(ngModel)]="especialidadSelected"
+                 required  [disabled]="flag">
+            </p-dropdown>
+        </div>
+        <div class="p-field">
+            <label for="medico"  class="p-sr-only">Médico</label>
+            <p-dropdown [showClear]="true"
+                        [filter]="true"
+                         [options]="medicos" 
+                          placeholder="Medico" 
+                          [(ngModel)]="orden.medico_id" 
+                          required  [disabled]="flag"
+                        ></p-dropdown>
+          </div>
+        <div class="p-field">
+            <label for="proveedor" class="p-sr-only">Proveedor</label>
+            <p-dropdown [showClear]="true"  
+                        [filter]="true" 
+                        [options]="proveedores" 
+                        placeholder="Proveedor" 
+                        [(ngModel)]="proveedorSelected"
+                        required 
+                        [disabled]="flag">
+            </p-dropdown>
+        </div>
+
+        <div class="p-field">
+            <label for="grupo" class="p-sr-only">Grupo de Servicios</label>
+            <p-dropdown [showClear]="true" 
+                        [filter]="true"
+                        [options]="grupos"
+                        placeholder="Grupo"
+                        [(ngModel)]="grupoSelected"
+                        (onChange)="dropdownServiciosPorGrupo();" 
+                         required
+                        [disabled]="flag"
+            >
+            </p-dropdown>
+          </div>
+          <div class="p-field">
+            <label for="grupo" class="p-sr-only">Servicios</label>
+            <p-dropdown [showClear]="true" 
+                        [filter]="true"
+                        [options]="serviciosSolicitados"
+                        placeholder="Servicios"
+                        [(ngModel)]="serviciosSolicitadosSel"
+                         required
+                        [disabled]="flag"
+            >
+            </p-dropdown>
+          </div>
+
+        <div class="p-field">
+          <label for="estadoOrden"  class="p-sr-only">Estado*</label>
+          <p-dropdown  [showClear]="true"
+                       [filter]="true"
+                       [options]="estadoOrdenes"
+                       placeholder="Estado"
+                       [(ngModel)]="orden.estado_atencion_id"
+                       required  [disabled]="flag" >
+          </p-dropdown>
+        </div>
+        <div class="p-field">
+          <label for="fecha" class="p-sr-only">Cita</label>
+          <p-calendar
+            required
+            [disabled]="flag"
+            baseZIndex="10000"
+            [locale]="es"
+            [yearNavigator]="true"
+            [monthNavigator]="true"
+            dateFormat="dd/mm/yy"
+            [showIcon]="true"
+            inputId="icon"
+            yearRange="2000:2050"
+            showButtonBar="true"
+            placeholder="Cita"
+            [(ngModel)]="fecha_cita"
+          >
+          </p-calendar>
+        </div>
+        <div class="p-field">
+          <label for="usuario" class="p-sr-only">Usuario</label>
+          <p-dropdown [showClear]="true" 
+                      [filter]="true" 
+                      [options]="usuarios" 
+                      placeholder="Usuario"  
+                      [disabled]="flag"
+                      [(ngModel)]="orden.usuario_creador"  >
+          </p-dropdown>
+        </div>
+        <div class="p-field">
+          <button (click)="consult()" pButton pRipple type="button"
+              label="Buscar">
+          </button>
+      </div>
+      <div class="p-field">
+        <button (click)="limpiar_variables_combos()" pButton pRipple type="button"
+            label="Limpiar">
+        </button>
+    </div>
+    </div>
+    
+    <hr><br />
+    
+    <app-basic-table  
+        [autoLayout]="true" 
+        [cantidad]=total 
+        [registros]='reporte' 
+        [cols]='cols' 
+        [resizable]='true' 
+        [summary]='true'
+        [loading]="loading"  
+        [exportarExcel] = 'true' 
+        [loading]="loading"
+        [exportarPdf] = 'false' 
+        [pdfPropiedades]='pdfPropiedades' >
+    </app-basic-table>
+    
+    </p-card>
+    
+    <!-- Notificación -->
+    <app-toast></app-toast>
+    

@@ -1,0 +1,194 @@
+<p-toolbar styleClass="p-mb-4">
+  <ng-template pTemplate="left">
+      <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-accion p-mr-2"
+          (click)="openNew()"></button>
+      <button pButton pRipple label="Borrar" icon="pi pi-trash" class="p-button-danger"
+          (click)="deleteSelectedItems()" [disabled]="!selectedRegistros || !selectedRegistros.length"></button>
+  </ng-template>
+
+  <ng-template pTemplate="right">
+      <!-- <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Importar" chooseLabel="Importar"
+              class="p-mr-2 p-d-inline-block"></p-fileUpload> 
+      <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-secondary"></button>-->
+  </ng-template>
+</p-toolbar>
+
+<p-table #dt [columns]="cols" [value]="proveedores" [rows]="10" [paginator]="true"
+  [globalFilterFields]="['proveedor_id','nombre','direccion']"
+  [(selection)]="selectedRegistros" [rowHover]="true" dataKey="proveedor_id" editMode="row" scrollHeight="500px"
+  selectionMode="single" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+  [showCurrentPageReport]="true">
+
+  <ng-template pTemplate="caption">
+      <div class="p-d-flex p-ai-center p-jc-between">
+          <h5 class="p-m-0">Proveedores</h5>
+          <span class="p-input-icon-left">
+              <i class="pi pi-search"></i>
+              <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                  placeholder="Buscar..." />
+          </span>
+      </div>
+  </ng-template>
+  <ng-template pTemplate="header" let-columns>
+      <tr>
+          <th style="width: 3em" [ngStyle]="{'width': '5%'}" class="text-center">
+              <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+          </th>
+          <th class="text-center" *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field"
+              [ngStyle]="{'width': col.width}">
+              {{col.header}}
+          </th>
+
+          <th [ngStyle]="{'width': '20%'}" class="text-center">Acciones </th>
+      </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+          <td style="width: 3em" [ngStyle]="{'width': '5%'}" class="text-center">
+              <a href="#" [pRowToggler]="rowData">
+                  <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+              </a>
+          </td>
+          <td *ngFor="let col of columns" class="text-center">
+              {{rowData[col.field]}}
+          </td>
+
+          <td class="text-center">
+              <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-accion p-mr-2"
+                  (click)="editar(rowData)"></button>
+              <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button"
+                  (click)="eliminar(rowData)"></button>
+          </td>
+      </tr>
+  </ng-template>
+
+  <ng-template pTemplate="summary">
+      <div class="p-d-flex p-ai-center p-jc-between">
+          En total hay {{proveedores ? proveedores.length : 0 }} proveedores.
+      </div>
+  </ng-template>
+</p-table>
+
+
+<!-- Nuevo/Editar -->
+<p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" [(header)]="tituloDialogo" [modal]="true"
+  styleClass="p-fluid" [closable]="false" [contentStyle]="{'overflow':'auto'}">
+
+  <ng-template pTemplate="content">
+
+      <form [formGroup]="form" novalidate>
+
+
+
+        <div class="p-field">
+            <label for="codigo">Codigo*</label>
+            <input type="text" formControlName="codigo" pInputText id="codigo" [(ngModel)]="proveedor.codigo"
+                autofocus required />
+            <small class="p-invalid" *ngIf="submitted && form.get('codigo').hasError('required')">* Campo
+                requerido</small>
+        </div>
+
+
+
+          <div class="p-field">
+              <label for="nombres">Nombre*</label>
+              <input type="text" formControlName="nombre" pInputText id="nombre" [(ngModel)]="proveedor.nombre"
+                  autofocus required />
+              <small class="p-invalid" *ngIf="submitted && form.get('nombre').hasError('required')">* Campo
+                  requerido</small>
+          </div>
+
+          <div class="p-field">
+            <label for="nemonico">Nemonico*</label>
+            <input type="text" formControlName="nemonico" pInputText id="nemonico" [(ngModel)]="proveedor.nemonico"
+                autofocus required />
+             <small class="p-invalid" *ngIf="submitted && form.get('nemonico').hasError('required')">* Campo
+                requerido</small> 
+        </div>
+
+
+
+
+          <div class="p-field"> 
+              <label for="direccion">Dirección*</label>
+              <input type="text" formControlName="direccion" pInputText id="direccion" [(ngModel)]="proveedor.direccion"
+                  autofocus required />
+              <small class="p-invalid" *ngIf="submitted && form.get('direccion').hasError('required')">* Campo
+                  requerido</small>
+          </div>
+
+          <div class="p-field">
+              <label for="telefono">Telefono*</label>
+              <input type="text" formControlName="telefono" pInputText id="telefono" [(ngModel)]="proveedor.telefono"
+                  autofocus required />
+              <small class="p-invalid" *ngIf="submitted && form.get('telefono').hasError('required')">* Campo
+                  requerido</small>
+          </div> 
+
+          <div class="p-field">
+            <label for="nombres">Rif*</label>
+            <input type="text" formControlName="rif" pInputText id="rif" [(ngModel)]="proveedor.rif"
+                autofocus required />
+            <small class="p-invalid" *ngIf="submitted && form.get('rif').hasError('required')">* Campo
+                requerido</small>
+         </div>
+
+         <div class="p-field">
+            <label for="representante">Representante</label>
+            <input type="text" formControlName="representante" pInputText id="representante" [(ngModel)]="proveedor.representante"/>
+                       
+         </div>
+
+         <div class="p-field">
+            <label for=" email">Email</label>
+            <input type="text" formControlName="email" pInputText id="email" [(ngModel)]="proveedor.email"/>
+            
+            </div>
+
+         <div class="p-field">
+            <label for="nit">Nit</label>
+            <input type="text" formControlName="nit" pInputText id="nit" [(ngModel)]="proveedor.nit"/>
+                                            
+         </div>
+
+         <div class="p-field">
+            <label for="tipoProveedor">Tipo Proveedor*</label>
+            <p-dropdown formControlName="tipoProveedor" [virtualScroll]="true" itemSize="43" [options]="tiposproveedor"
+                [(ngModel)]="proveedor.tipo_proveedor_id" placeholder="Seleccionar tipo" name="tipoProveedor" [filter]="true"
+                [resetFilterOnHide]="true" autofocus required>
+            </p-dropdown>
+            <small class="p-invalid" *ngIf="submitted && form.get('tipoProveedor').hasError('required')">* Campo
+                requerido</small>
+        </div>
+
+        <div class="p-field">
+            <label for="tipoCentro">Tipo Centro*</label>
+            <p-dropdown formControlName="tipoCentroProveedor" [virtualScroll]="true" itemSize="43" [options]="tiposCentroproveedor"
+                [(ngModel)]="proveedor.tipo_centro_id" placeholder="Seleccionar tipo" name="tipoCentroProveedor" [filter]="true"
+                [resetFilterOnHide]="true" autofocus required>
+            </p-dropdown>
+            <small class="p-invalid" *ngIf="submitted && form.get('tipoCentroProveedor').hasError('required')">* Campo
+                requerido</small>
+        </div>
+
+          <div class="p-field">
+              <label for="activo">Activo*</label>
+              <p-inputSwitch formControlName="activo" [(ngModel)]="proveedor.activo"
+                  (onChange)="handleChange($event, proveedor)" pInputTextarea autofocus required> </p-inputSwitch>
+          </div>
+          
+      </form>
+  </ng-template>
+  <ng-template pTemplate="footer">
+      <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="close()"></button>
+      <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardar()"></button>
+  </ng-template>
+
+
+</p-dialog>
+
+<!-- Notificación -->
+<app-toast></app-toast>
+
+<!-- Confirmación -->
+<app-confirm-dialog></app-confirm-dialog>

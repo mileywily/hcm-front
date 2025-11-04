@@ -1,0 +1,22 @@
+<p-dialog
+  header="{{ header }}"
+  [(visible)]="displayHelp"
+  [style]="{ width: width }"
+  [baseZIndex]="10000"
+  [draggable]="draggable"
+  [maximizable]="maximizable"
+  [modal]="modal"
+  [resizable]="resizable"
+  [contentStyle]="{ height: height, overflow: overflow }"
+  [closable]="closable"
+  styleClass="p-fluid"
+>
+  <ng-content select="[header]"></ng-content>
+
+  <ng-content select="[body]"></ng-content>
+
+  <ng-template pTemplate="footer">
+    <ng-content></ng-content>
+  </ng-template>
+</p-dialog>
+

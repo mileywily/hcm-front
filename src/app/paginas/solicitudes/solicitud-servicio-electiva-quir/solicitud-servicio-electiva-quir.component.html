@@ -1,0 +1,1044 @@
+<div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="row">
+  
+          <div class="p-field p-col-12">
+            <div style="text-align: right">
+              <button style="text-align: right"
+                type="button"
+                pButton
+                label="Ir a carga familiar"
+                (click)="regresar()">
+              </button>
+              &nbsp;
+              <button style="text-align: right"
+                type="button"
+                pButton
+                label="Ir a listado"
+                [disabled]="!rolElectQuirModificarSolicitud"
+                (click)="listado()">
+              </button>
+  
+            </div>
+          </div>
+  
+        </div>
+  
+        <p-panel>
+          <ng-template pTemplate="header">
+  
+              <div class="col-12" >
+                <h5>{{title}}</h5>
+              </div>
+          </ng-template>
+          <!-- Body Content -->
+  
+          <!--Fila 1-->
+          <div class="p-fluid p-grid p-formgrid">
+            <div class="p-field p-col-2">
+              <label for="cedula_titular">CI Titular</label>
+              <input
+                type="text"
+                class="p-inputtext-sm"
+                readonly
+                pInputText
+                title="Cédula del titular"
+                [(ngModel)]="beneficiario.cedula_titular"
+              />
+            </div>
+  
+            <div class="p-field p-col-8">
+              <label for="nombre_titular">Titular</label>
+              <input
+                type="text"
+                class="p-inputtext-sm"
+                readonly
+                pInputText
+                [(ngModel)]="titular.nombres"
+              />
+            </div>
+  
+            <div class="p-field p-col-2">
+              <label for="parentesco">Parentesco</label>
+              <input
+                type="text"
+                class="p-inputtext-sm"
+                readonly
+                pInputText
+                [(ngModel)]="beneficiario.parentesco"
+              />
+            </div>
+          </div>
+  
+          <!--Fila 2-->
+          <div class="p-fluid p-grid p-formgrid">
+            <div class="p-field p-col-2">
+              <label for="cedula_beneficiario">CI Beneficiario</label>
+              <input
+                type="text"
+                class="p-inputtext-sm"
+                readonly
+                pInputText
+                title="Cédula del Beneficiario"
+                [(ngModel)]="beneficiario.cedula_beneficiario"
+              />
+            </div>
+  
+            <div class="p-field p-col-6">
+              <label for="nombre">Apellidos y Nombres</label>
+              <input
+                type="text"
+                class="p-inputtext-sm"
+                readonly
+                pInputText
+                [(ngModel)]="beneficiario.nombres"
+              />
+            </div>
+  
+            <div class="p-field p-col-1">
+              <label for="edad">Edad</label>
+              <input
+                type="text"
+                class="p-inputtext-sm"
+                readonly
+                pInputText
+                [(ngModel)]="edad"
+              />
+            </div>
+  
+            <div class="p-field p-col-1">
+              <label for="sexo">Sexo</label>
+              <input
+                type="text"
+                class="p-inputtext-sm"
+                readonly
+                pInputText
+                [(ngModel)]="beneficiario.sexo"
+              />
+            </div>
+  
+            <div class="p-field p-col-2">
+              <label for="fecha_nacimiento">F. nacimiento</label>
+              <input
+                type="text"
+                class="p-inputtext-sm"
+                readonly
+                pInputText
+                [(ngModel)]="fecha_nacimiento"
+              />
+            </div>
+          </div>
+  
+          <!--Fila 3-->
+          <form [formGroup]="form" novalidate>
+            <div class="p-fluid p-grid p-formgrid">
+              <div class="p-field p-col-2">
+                <label for="cedula_hcm">Cédula</label>
+                <input
+                  type="text"
+                  class="p-inputtext-sm"
+                  formControlName="cedula_hcm"
+                  pInputText
+                  [(ngModel)]="beneficiario.cedula_hcm"
+                />
+              </div>
+  
+              <div class="p-field p-col-6">
+                <label for="email">Email</label>
+                <input
+                  type="text"
+                  class="p-inputtext-sm"
+                  formControlName="email"
+                  pInputText
+                  [(ngModel)]="beneficiario.email"
+                />
+              </div>
+  
+              <div class="p-field p-col-2">
+                <label for="telefono">Teléfono 1</label>
+                <input
+                  required
+                  type="text"
+                  class="p-inputtext-sm"
+                  formControlName="telefono"
+                  pInputText
+                  [(ngModel)]="beneficiario.telefono"
+                />
+                <small
+                  class="p-invalid"
+                  *ngIf="submitted && form.get('telefono').hasError('required')"
+                  >* Campo requerido</small
+                >
+              </div>
+  
+              <div class="p-field p-col-2">
+                <label for="telefono2">Teléfono 2</label>
+                <input
+                  required
+                  type="text"
+                  class="p-inputtext-sm"
+                  formControlName="telefono2"
+                  pInputText
+                  [(ngModel)]="beneficiario.telefono2"
+                />
+                <small
+                  class="p-invalid"
+                  *ngIf="submitted && form.get('telefono2').hasError('required')"
+                  >* Campo requerido</small
+                >
+              </div>
+            </div>
+  
+            <div class="p-fluid p-grid p-formgrid">
+              <div class="p-field p-col-2">
+                <label for="tipoCobertura">Tipo Cobertura</label>
+                <p-dropdown
+                  formControlName="tipoCobertura"
+                  itemSize="43"
+                  [options]="tipoCoberturas"
+                  [(ngModel)]="solicitud.tipo_cobertura_id"
+                  name="tipoCobertura"
+                  [filter]="true"
+                  [resetFilterOnHide]="true"
+                  autofocus
+                  [disabled] = "solicitud.solicitud_id"
+                  class="p-inputtext-sm"
+                  title="Tipo de Cobertura"
+                >
+                </p-dropdown>
+              </div>
+  
+              <div class="p-field p-col-3">
+                <label for="tipoSolicitud">Tipo Solicitud</label>
+                <p-dropdown
+                  formControlName="tipoSolicitud"
+                  itemSize="43"
+                  [options]="tipoSolicitudes"
+                  [(ngModel)]="solicitud.tipo_solicitud_id"
+                  name="tipoSolicitud"
+                  [filter]="true"
+                  [resetFilterOnHide]="true"
+                  autofocus
+                  [disabled]="solicitud.solicitud_id"
+                  class="p-inputtext-sm"
+                  title="Tipo de solicitud"
+                >
+                </p-dropdown>
+              </div>
+  
+              <div class="p-field p-col-5"  >
+                <label for="tipoOrden">Requerimiento</label>
+                <p-dropdown formControlName="tipoOrden"
+                            itemSize="43"
+                            [options]="tipoOrdenes"
+                            [(ngModel)]="solicitud.tipo_atencion_id"
+                            name="tipoOrden"
+                            [filter]="true"
+                            [resetFilterOnHide]="true"
+                            autofocus
+                            class="p-inputtext-sm"
+                            [disabled] = "solicitud.solicitud_id"
+                            title="Tipo de Orden"
+                            
+                           
+                            >
+                </p-dropdown>
+              </div>
+  
+              <div class="p-field p-col-2">
+                <label for="estadoSolicitud">Estado Solicitud</label>
+                <p-dropdown
+                  formControlName="estadoSolicitud"
+                  itemSize="43"
+                  [options]="estadoSolicitudes"
+                  [(ngModel)]="solicitud.estado_solicitud_id"
+                  name="estadoSolicitud"
+                  [filter]="true"
+                  [resetFilterOnHide]="true"
+                  autofocus
+                  [disabled]="true"
+                  class="p-inputtext-sm"
+                  title="Estado de la solicitud"
+                >
+                </p-dropdown>
+              </div>
+  
+            </div>
+  
+  
+            <div class="p-fluid p-grid p-formgrid">
+              <div class="p-field p-col-2">
+                <label for="especialidad">Especialidad</label>
+                <p-dropdown
+                  formControlName="especialidad"
+                  itemSize="43"
+                  [options]="especialidades"
+                  [(ngModel)]="solicitud.especialidad_id"
+                  placeholder="Seleccione"
+                  name="especialidad"
+                  [filter]="true"
+                  [resetFilterOnHide]="true"
+                  autofocus
+                  [disabled]="solicitud.solicitud_id"
+                  required
+                  class="p-inputtext-sm"
+                  title="Especialidad"
+                  (onChange)="fullDropdownMedicos();" 
+                >
+                </p-dropdown>
+  
+                <small
+                  class="p-invalid"
+                  *ngIf="
+                    submitted && form.get('especialidad').hasError('required')
+                  "
+                  >* Campo requerido
+                </small>
+              </div>
+        
+                    <div class="p-field p-col-2">
+                      <label for="medico">Médico</label>
+                      <p-dropdown
+                        formControlName="medico"
+                        itemSize="43"
+                        [options]="medicos"
+                        [(ngModel)]="solicitud.medico_id"
+                        placeholder="Seleccione"
+                        name="medico"
+                        [filter]="true"
+                        [resetFilterOnHide]="true"
+                        autofocus
+                        required
+                        [disabled]="solicitud.estado_solicitud_id == 2 ||  solicitud.estado_solicitud_id == 3 ||  solicitud.estado_solicitud_id == 4"
+                        class="p-inputtext-sm"
+                        title="Medico"
+                      >
+                      </p-dropdown>
+        
+                      <small
+                        class="p-invalid"
+                        *ngIf="
+                          submitted && form.get('especialidad').hasError('required')
+                        "
+                        >* Campo requerido
+                      </small>
+                    </div>
+                    <div class="p-field p-col-2">
+                    <label for="domicilio">Domicilio</label>
+                    <p-dropdown
+                      formControlName="domicilio"
+                      itemSize="43"
+                      [options]="domicilios"
+                      [(ngModel)]="solicitud.domicilio_id"
+                      placeholder="Seleccione"
+                      name="domicilio"
+                      [filter]="true"
+                      [resetFilterOnHide]="true"
+                      autofocus
+                      required
+                      [disabled]="solicitud.estado_solicitud_id == 2 ||  solicitud.estado_solicitud_id == 3 ||  solicitud.estado_solicitud_id == 4"
+                      class="p-inputtext-sm"
+                      title="Domicilio"
+                    >
+                    </p-dropdown>
+                    <small
+                    class="p-invalid"
+                    *ngIf="
+                      submitted && form.get('domicilio').hasError('required')
+                    "
+                    >* Campo requerido
+                  </small>
+                  </div>
+                
+              
+                    <div class="p-field p-col-2">
+                    <label for="prioridad">Prioridad</label>
+                    <p-dropdown
+                      formControlName="prioridad"
+                      itemSize="43"
+                      [options]="Prioridades"
+                      [(ngModel)]="solicitud.prioridad_id"
+                      placeholder="Seleccione"
+                      name="prioridad"
+                      [filter]="true"
+                      [resetFilterOnHide]="true"
+                      autofocus
+                      required
+                      [disabled]="solicitud.estado_solicitud_id == 2 ||  solicitud.estado_solicitud_id == 3 ||  solicitud.estado_solicitud_id == 4"
+                      class="p-inputtext-sm"
+                      title="prioridad"
+                    >
+                    </p-dropdown>
+                    <small
+                    class="p-invalid"
+                    *ngIf="
+                      submitted && form.get('prioridad').hasError('required')
+                    "
+                    >* Campo requerido
+                  </small>
+                  </div>
+                    <div class="p-field p-col-2">
+                        <label for="motivo">Fecha Recepción*</label>
+                        <p-calendar
+                        formControlName="fecha_recepcion"
+                        baseZIndex="10000"
+                        [yearNavigator]="true"
+                        [monthNavigator]="true"
+                        [(ngModel)]="fecha_recepcion"
+                        dateFormat="yy-mm-dd"
+                        yearRange="2000:2050"
+                        showButtonBar="true"
+                        placeholder="Fecha Recepción"
+                        [showIcon]="false"
+                        [disabled]="false"
+        
+                    >
+                    </p-calendar>
+                    </div>
+                    <div class="p-field p-col-2">
+                        <label for="solicitud_id">Nro.</label>
+                        <input
+                          type="text"
+                          class="p-inputtext-sm"
+                          readonly
+                          pInputText
+                          [ngModelOptions]="{ standalone: true }"
+                          title="Nro. de la solicitud"
+                          [(ngModel)]="solicitud_id"
+                        />
+                      </div>
+
+                </div>
+            <div class="p-fluid p-grid p-formgrid" >
+              <div class="p-field p-col-2">
+                <label for="ente">Ente</label>
+                <p-dropdown
+                  formControlName="ente"
+                  itemSize="43"
+                  [options]="Entes"
+                  [(ngModel)]="solicitud.ente_id"
+                  placeholder="Seleccione"
+                  name="ente"
+                  [filter]="true"
+                  [resetFilterOnHide]="true"
+                  autofocus
+                  required
+                  [disabled]="solicitud.estado_solicitud_id == 2 ||  solicitud.estado_solicitud_id == 3 ||  solicitud.estado_solicitud_id == 4"
+                  class="p-inputtext-sm"
+                  title="ente"
+                >
+                </p-dropdown>
+                <small
+                class="p-invalid"
+                *ngIf="
+                  submitted && form.get('ente').hasError('required')
+                "
+                >* Campo requerido
+              </small>
+              </div>
+              <div class="p-field p-col-2">
+                <label>Grupo de Diagnosticos</label>
+                <p-dropdown
+                  formControlName="grupo"
+                  itemSize="43"
+                  [options]="gruposdiagnostico"
+                  [(ngModel)]="grupodiagnostico"
+                  placeholder="Seleccione"
+                  name="grupodiagnostico"
+                  [filter]="true"
+                  [resetFilterOnHide]="true"
+                  (onChange)="fullDropdownDiagnosticoPorGrupo();" 
+                  autofocus
+                  class="p-inputtext-sm"
+                  title="Grupo de Diagnosticos"
+                >
+                </p-dropdown>
+              </div>
+    
+              <div class="p-field p-col-6" >
+                <label>Diagnosticos</label>
+                <p-listbox 
+                           [options]="diagnosticosSolicitados"
+                           [(ngModel)]="diagnosticosSel"
+                           [metaKeySelection]="false"
+                           [checkbox]="true"
+                           [filter]="true"
+                           [multiple]="true"
+                           optionLabel="name"
+                           formControlName="diagnosticosSel"
+                           [listStyle]="{'max-height':'250px'}"
+                           [style]="{'width':'30rem'}"
+                           >
+    
+                </p-listbox>
+                
+              </div>
+    
+              <div class="p-field p-col-2">
+                <div style="text-align: right">
+                  <label class="text-white">-</label>
+                  <button
+                    type="button"
+                    pButton
+                    label="Añadir"
+                    class="p-button-sm"
+                    [disabled]="deshabilitarGuardar"
+                    (click)="addDiagnosticos()"
+                  ></button>
+                </div>
+              </div>
+    
+            </div>
+
+            <p-table
+            styleClass="p-datatable-sm p-datatable-striped"
+            [columns]="cols"
+            [value]="diagnosticosAgregados"
+            editMode="row"
+            [hidden]="!(diagnosticosAgregados.length > 0)" >
+      
+              <ng-template pTemplate="caption">
+                      <div class="p-d-flex p-jc-between">Diagnosticos </div>
+              </ng-template>
+        
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th style="width: 10%">Cod.</th>
+                    <th style="width: 10%">Grupo.Diagnostico</th>
+                    <th style="width: 25%">Diagnostico</th>
+
+                    <th style="width: 10%"></th>
+                  </tr>
+                </ng-template>
+        
+              <ng-template
+                pTemplate="body"
+                let-rowData
+                let-editing="editing"
+                let-ri="rowIndex"
+              >
+                <tr [pEditableRow]="rowData">
+                  <td class="text-center">
+                    <p-cellEditor>
+                      <ng-template pTemplate="output">
+                        {{ rowData.diagnostico_id }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+      
+                  <td class="text-left">
+                    {{ rowData.nombre_grupo }}
+                  </td>
+                  <td class="text-center">
+                    <p-cellEditor>
+                      <ng-template pTemplate="output">
+                        {{ rowData.nombre }}
+                      </ng-template>
+                    </p-cellEditor>
+                  </td>
+                  <td style="text-align: center">
+                    <button
+                      title="Eliminar"
+                      pButton
+                      type="button"
+                      pSaveEditableRow
+                      icon="pi pi-trash"
+                      class="ui-button-danger p-button-sm"
+                      style="margin-right: 0.1em"
+                      (click)="removeDiagnostico(rowData);"
+                    
+                    ></button>
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+
+  
+            <div class="p-fluid p-grid p-formgrid">
+              <div class="p-field p-col-10">
+                <label for="motivo">Diagnostico Especifico*</label>
+                <textarea
+                  pInputText
+                  typ
+                  e="text"
+                  formControlName="motivo"
+                  inputId="motivo"
+                  rows="1"
+                  cols="43"
+                  [(ngModel)]="solicitud.motivo"
+                  pInputTextarea
+                  autofocus
+                  required
+                ></textarea>
+                <small
+                  class="p-invalid"
+                  *ngIf="submitted && form.get('motivo').hasError('required')"
+                  >* Campo requerido</small
+                >
+              </div> 
+            </div> 
+            <div class="p-fluid p-grid p-formgrid">
+              <div class="p-field p-col-10">
+                <label for="motivo">Observaciones</label>
+                <textarea
+                  pInputText
+                  typ
+                  e="text"
+                  formControlName="observacion"
+                  inputId="observacion"
+                  rows="1"
+                  cols="43"
+                  [(ngModel)]="solicitud.observacion"
+                  pInputTextarea
+                  autofocus
+                ></textarea>
+              </div>      
+            </div>        
+  <br>
+  <!-- Recaudos-->
+  <br>
+  <p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+      <button
+        pButton
+        pRipple
+        label="Nuevo"
+        icon="pi pi-plus"
+        class="p-button-accion p-mr-2"
+        (click)="openNewPresupuesto()"
+      ></button>
+ 
+    </ng-template>
+  </p-toolbar>
+
+  <p-table 
+  #dt
+  [columns]="cols"
+  [value]="serviciosPresupuesto"
+  [rows]="10"
+  [paginator]="true"
+  [(selection)]="selectedRegistros"
+  [globalFilterFields]="['servicio_id','label','proveedor_id']"
+  [rowHover]="true"
+  dataKey="solicitud_presupuesto_id"
+  editMode="row"
+  scrollHeight="500px"
+  selectionMode="single"
+  currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+  [showCurrentPageReport]="true"
+>
+  <ng-template pTemplate="caption">
+    <div class="p-d-flex p-ai-center p-jc-between p-mb-2">
+      <h5 class="p-m-1">Presupuestos de Procedimientos</h5>
+    </div>
+
+    <div class="p-grid">
+
+
+    </div>
+  </ng-template>
+
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th style="width: 3rem" [ngStyle]="{ width: '5%' }" class="text-center">
+        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+      </th>
+      <th
+        class="text-center"
+        *ngFor="let col of columns"
+        pResizableColumn
+        [pSortableColumn]="col.field"
+        [ngStyle]="{ width: col.width }"
+      >
+        {{ col.header }}
+      </th>
+      <th [ngStyle]="{ width: '20%' }" class="text-center">Acciones</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+      <td style="width: 3em" [ngStyle]="{ width: '5%' }" class="text-center">
+        <a href="#" [pRowToggler]="rowData">
+          <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+        </a>
+      </td>
+      <td *ngFor="let col of columns" class="text-center">
+        {{ rowData[col.field] }}
+      </td>
+      <td class="text-center">
+        <button
+          pButton
+          pRipple
+          icon="pi pi-pencil"
+          class="p-button-rounded p-button-accion p-mr-2"
+          (click)="edit(rowData)"
+        ></button>
+        <button
+          pButton
+          pRipple
+          icon="pi pi-trash"
+          class="p-button-rounded p-button"
+          (click)="confirmDelete(rowData)"
+        ></button>
+      </td>
+    </tr>
+  </ng-template>
+
+  <ng-template pTemplate="summary">
+    <div class="p-d-flex p-ai-center p-jc-between">
+      En total hay
+      {{ serviciosPresupuesto ? serviciosPresupuesto.length : 0 }}
+      Presupuestos.
+    </div>
+  </ng-template>
+</p-table>
+<p-dialog
+  [(visible)]="displayDialog"
+  [style]="{ width: '650px' }"
+  [(header)]="tituloDialogo"
+  [modal]="true"
+  styleClass="p-fluid"
+  [closable]="false"
+  [contentStyle]="{ overflow: 'visible' }"
+>
+  <ng-template pTemplate="content">
+    
+    <form [formGroup]="form1" novalidate>
+      <div class="p-fluid p-formgrid p-grid">
+        <div class="p-field p-col-12">
+          <label for="servicio">Procedimiento Médico*</label>
+          <p-dropdown
+            formControlName="servicio"
+            [options]="serviciosSolicitados"
+            [(ngModel)]="servicioPresupuesto.servicio_id"
+            placeholder="Seleccionar Procedimiento"
+            [filter]="true"
+            [resetFilterOnHide]="true"
+            autofocus
+            required
+          >
+          </p-dropdown>
+          <small
+            class="p-invalid"
+            *ngIf="submitted && form1.get('servicio').hasError('required')"
+            >* Campo requerido</small
+          >
+        </div>
+
+        
+        <div class="p-field p-col-4">
+
+          <label for="proveedor">Proveedor 01</label>
+          <p-dropdown
+            formControlName="proveedor"
+            [options]="proveedores"
+            [(ngModel)]="servicioPresupuesto.proveedor_id"
+            placeholder="Seleccionar proveedor"
+            [filter]="true"
+            [resetFilterOnHide]="true"
+            autofocus
+            required
+          >
+          </p-dropdown>
+          <small
+            class="p-invalid"
+            *ngIf="submitted && form1.get('proveedor').hasError('required')"
+            >* Campo requerido</small
+          >
+        </div>
+        
+        <div class="p-field p-col-2">
+            <label for="precio">Precio $* 01</label>
+            <input
+              type="text"
+              formControlName="precio"
+              pInputText
+              id="precio"
+              [(ngModel)]="servicioPresupuesto.precio"
+              autofocus
+              (keyup)="calcular_preciobs()"
+              required
+            />
+            <small
+              class="p-invalid"
+              *ngIf="submitted && form1.get('precio').hasError('required')"
+              >* Campo requerido</small
+            >
+          </div>
+
+          <div class="p-field p-col-3">
+            <label for="tasa">Tasa Cambio* 01</label>
+            <input
+              type="text"
+              formControlName="precio_tasa"
+              pInputText
+              id="precio_tasa"
+              [(ngModel)]="servicioPresupuesto.precio_tasa"
+              autofocus
+              (keyup)="calcular_preciobs()"
+              required
+            />
+            <small
+              class="p-invalid"
+              *ngIf="submitted && form1.get('precio_tasa').hasError('required')"
+              >* Campo requerido</small
+            >
+          </div>
+
+          <div class="p-field p-col-2">
+            <label for="precio_bs">Precio Bs* 01</label>
+            <input
+              type="text"
+              formControlName="precio_bs"
+              pInputText
+              id="precio_bs"
+              [(ngModel)]="servicioPresupuesto.precio_bs"
+              autofocus
+              required
+              readonly
+            />
+            <small
+              class="p-invalid"
+              *ngIf="submitted && form1.get('precio_bs').hasError('required')"
+              >* Campo requerido</small
+            >
+          </div>
+
+          <div class="p-field p-col-4" *ngIf="nuevoRegistro"
+          >
+
+            <label for="proveedor1">Proveedor 02</label>
+            <p-dropdown
+              formControlName="proveedor1"
+              [options]="proveedores"
+              [(ngModel)]="servicioPresupuesto.proveedor_id1"
+              placeholder="Seleccionar proveedor"
+              [filter]="true"
+              [resetFilterOnHide]="true"
+              autofocus
+            >
+            </p-dropdown>
+
+          </div>
+
+          <div class="p-field p-col-2" *ngIf="nuevoRegistro">
+            <label for="precio1">Precio $* 02</label>
+            <input
+              type="text"
+              formControlName="precio1"
+              pInputText
+              id="precio1"
+              [(ngModel)]="servicioPresupuesto.precio1"
+              autofocus
+              (keyup)="calcular_preciobs2()"
+              
+            />
+          </div>
+
+          <div class="p-field p-col-3" *ngIf="nuevoRegistro" >
+            <label for="tasa1">Tasa Cambio* 02</label>
+            <input
+              type="text"
+              formControlName="precio_tasa1"
+              pInputText
+              id="precio_tasa1"
+              [(ngModel)]="servicioPresupuesto.precio_tasa1"
+              autofocus
+              (keyup)="calcular_preciobs2()"
+              
+            />
+
+          </div>
+
+          <div class="p-field p-col-2" *ngIf="nuevoRegistro">
+            <label for="precio_bsfa-rotate-180">Precio Bs* 02</label>
+            <input
+              type="text"
+              formControlName="precio_bs1"
+              pInputText
+              id="precio_bs1"
+              [(ngModel)]="servicioPresupuesto.precio_bs1"
+              autofocus
+              
+              readonly
+            />
+           
+          </div>
+
+
+      </div>
+    </form>
+  </ng-template>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      pRipple
+      label="Cancelar"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="close()"
+    ></button>
+    <button
+      pButton
+      pRipple
+      label="Guardar"
+      icon="pi pi-check"
+      class="p-button-text"
+      (click)="save()"
+    ></button>
+  </ng-template>
+</p-dialog>
+
+            <!-- INICIO Tabla de servicios solicitados para caso de IMAGENES -->
+            <!--Selección de servicios solicitados para imágenes-->
+            
+
+            
+   
+          </form>
+  
+          <ng-template pTemplate="footer">
+            <div style="text-align: right">
+              <button
+                type="button"
+                pButton
+                label="Guardar"
+                [disabled]="deshabilitarGuardar"
+                (click)="guardar()"
+              ></button>
+            </div>
+  
+          </ng-template>
+  
+        </p-panel>
+      </div>
+    </div>
+  </div>
+   
+  <br>
+  <!-- Ordenes de Servicio-->
+  <div class="container" *ngIf="solicitud_id && (rolElectQuirCrearOrden )">
+    <div class="row">
+      <div class="col-lg-12">
+        <p-card>
+          <!-- Ordenes de atención -->
+          <p-table
+            styleClass="p-datatable-sm"
+            [columns]="cols"
+            [value]="ordenes"
+            [rows]="10"
+            [paginator]="true"
+            [loading]="loading"
+            dataKey="atencion_id">
+  
+            <ng-template pTemplate="caption">
+              <div class="p-d-flex p-jc-between">Ordenes de Procedimiento</div>
+            </ng-template>
+            <ng-template pTemplate="header">
+              <tr>
+                <th [ngStyle]="{ width: '10%' }">Nro. Orden</th>
+                <th [ngStyle]="{ width: '20%' }">Tipo Atención</th>
+                <th [ngStyle]="{ width: '20%' }">Procedimiento Médico</th>
+                <th [ngStyle]="{ width: '20%' }">Proveedor</th>
+  
+                <th [ngStyle]="{ width: '10%' }">Fecha. Cita</th>
+                <th [ngStyle]="{ width: '10%' }">Estado</th>
+  
+                <th [ngStyle]="{ width: '10%' }">Acción</th>
+              </tr>
+            </ng-template>
+  
+            <ng-template pTemplate="body" let-rowData let-columns="columns">
+              <tr>
+                <td class="text-center">
+                  {{ rowData.atencion_id }}
+                </td>
+                <td class="text-center">
+                  {{ rowData.nombre_tipo_atencion }}
+                </td>
+                <td class="text-center" *ngIf="rowData.tipo_atencion_id == 4">
+                  <button  pButton type="button" 
+                           label="{{ rowData.nombre_servicio }}" 
+                           (click)="dialogoExamen(rowData)"
+                           class="p-button-link">
+                  </button>
+                </td>
+  
+                <td class="text-center" *ngIf="rowData.tipo_atencion_id == 3">
+                   {{ rowData.nombre_servicio }}
+                </td>
+  
+                <td class="text-center">
+                  {{ rowData.nombre_proveedor }}
+                </td>
+  
+                <td class="text-center">
+                  {{ rowData.fecha_cita_formato }}
+                </td>
+  
+                <td class="text-center">
+                  {{ rowData.nombre_estado_atencion }}
+                 
+                </td>
+                <td class="text-center">
+                  <div class="p-d-flex">
+                    <button
+                      pButton
+                      pRipple
+                      icon="pi pi-check"
+                      class="p-button-secondary p-button-rounded p-button-plain p-mr-2"
+                      title="Procesar Orden"
+                      [disabled]="rowData.estado_atencion_id != 2 || deshabilitarBotonConfirmar"
+                      (click)="procesarOrden(rowData)"
+                    ></button>
+  
+                    <button
+                      pButton
+                      pRipple 
+                      icon="pi pi-ban"
+                      class="
+                        p-button-danger p-button-rounded p-button-plain p-mr-2
+                      "
+                      title="Cancelar Orden"
+                      [disabled]="rowData.estado_atencion_id != 2 || deshabilitarBotonCancelar"
+                      (click)="dialogoCausa(rowData)"
+                    ></button>
+                  </div>
+                </td>
+              </tr>
+            </ng-template>
+  
+            <ng-template pTemplate="summary">
+              <div style="text-align: right">
+                <button
+                  type="button"
+                  pButton
+                  icon="fa fa-plus"
+                  [disabled]="false"
+                  label="Crear Orden "
+                  (click)="crearOrden()"
+                ></button>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="7" style="text-align: left">
+                  No se han encontrado registros.
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </p-card>
+      </div>
+    </div>
+  </div>
+  <!-- Notificación -->
+  
+  <app-toast></app-toast>
+  
+  <!-- Confirmación -->
+  <app-confirm-dialog></app-confirm-dialog>
+  
+  <app-block-ui [blocked]="blocked"></app-block-ui>

@@ -1,0 +1,122 @@
+<p-card>
+  <app-title title={{title}}></app-title>
+  
+  <p> Indique los siguientes datos para la búsqueda del beneficiario:</p>
+  <div class="p-formgroup-inline">
+      <div class="p-field" title="Tipo de consulta">
+          <label for="tiposConsultas" class="p-sr-only">Buscar por: </label>
+  
+          <p-dropdown [options]="tiposConsultas" [(ngModel)]="tipoConsultaSelected" 
+                      placeholder="Seleccione"  name="value"
+                      required>
+          </p-dropdown>
+  
+      </div>
+   
+      <div class="p-field">
+        <label for="parametro"></label>
+        <input
+          type="text"
+          (keyup.enter)="consult()"
+          [(ngModel)]="parametro"
+          pInputText
+          required
+        />
+      </div>
+  
+      <div class="p-field">
+          <p-button [disabled]="!tipoConsultaSelected || !parametro"  label="Consultar"  icon="fa fa-search" iconPos="left" (onClick)="consult()">
+          </p-button>
+      </div>
+  </div>
+  
+  
+  <hr><br />
+  
+  <p-table #dt [columns]="cols" [value]="reporte"  [rows]="10" [paginator]="true"
+      selectionMode="single" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+      [loading]="loading">
+  
+      <ng-template pTemplate="header" let-columns>
+          <tr>
+              <th *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field"
+                  [ngStyle]="{'width': col.width}">
+                  {{col.header}}
+              </th>
+              <th pResizableColumn>Crear solicitud</th>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-rowData let-columns="columns">
+          <tr>            
+              <!--<td *ngFor="let col of columns" class="text-center">
+                  {{rowData[col.field]}}
+              </td>-->
+  
+              <td [ngStyle]="{ width: '10%' }" class="text-center">
+                {{ rowData.cedula_titular }}
+              </td>
+  
+              <td [ngStyle]="{ width: '35%' }" class="text-center">
+                {{ rowData.beneficiario }}
+              </td>
+  
+              <td [ngStyle]="{ width: '20%' }" class="text-center">
+                {{ rowData.parentesco }}
+              </td>
+  
+              <td [ngStyle]="{ width: '20%' }" class="text-center">
+                {{ rowData.cedula_beneficiario }}
+              </td>
+
+              <td [ngStyle]="{ width: '5%' }" class="text-center">
+                {{ rowData.discapacidad == 0 ? 'NO' : 'SI' }}
+              </td>
+  
+              <td class="text-center" [ngStyle]="{ width: '10%' }">
+                  <div [ngClass]="{'outofstock': rowData.estado == 'FA', 'lowstock': rowData.estado === 'IN','instock': rowData.estado === 'AC'}">
+                    {{ rowData.d_estado }} {{ rowData.nombre_causa }}
+                  </div>
+              </td>
+
+              <td [ngStyle]="{ width: '20%' }" class="text-center">
+                <div class="p-d-flex">
+                  <button pButton pRipple icon="pi pi-copy" 
+                    class="p-button-rounded p-button-warning mr-2" 
+                    title="Crear Solicitud"
+
+                    [disabled]= " rowData.estado == 'FA' || rowData.estado == 'IN' "
+                    (click)="crearSolicitud(rowData.beneficiario_id,-1)">
+                  </button>
+                </div>
+              </td>
+
+
+  
+          </tr>
+  
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+          <tr>
+              <td colspan="6" style="text-align:left">No se han encontrado registros.</td>
+          </tr>
+      </ng-template>
+      <ng-template pTemplate="summary">
+          <div class="p-d-flex">
+
+          </div>
+      </ng-template>
+  
+  </p-table>
+  
+
+  <!--
+  <app-basic-table [cantidad]=total [registros]='reporte' [cols]='cols' [resizable]='false' [summary]='true'
+      [loading]="loading">
+  </app-basic-table>
+  -->
+
+
+   
+  </p-card>
+
+  <app-block-ui [blocked]="blocked"></app-block-ui>

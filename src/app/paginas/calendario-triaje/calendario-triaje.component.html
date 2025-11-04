@@ -1,0 +1,131 @@
+<div class="row">
+  <div class="col-md-3">
+    <p-card>
+      <app-title title="{{ title }}"></app-title>
+
+      <div class="p-fluid">
+        <form [formGroup]="form" novalidate>
+          <div class="form-group">
+            <label for="especialidad">Especialidad:</label>
+            <p-dropdown
+              placeholder="Seleccionar"
+              [filter]="true"
+              [resetFilterOnHide]="true"
+              formControlName="especialidad"
+              [(ngModel)]="datos.especialidad_id"
+              [options]="especialidades"
+              (onChange)="dropdownM()"
+              (onChange)="dropdownS()"
+              [disabled]="flag"
+            ></p-dropdown>
+          </div>
+          <div class="form-group">
+            <label for="medico">Médico:</label>
+            <p-dropdown
+              placeholder="Seleccionar"
+              [filter]="true"
+              [resetFilterOnHide]="true"
+              formControlName="medico"
+              [options]="medicos"
+              [(ngModel)]="datos.medico_id"
+              (onChange)="medicoChange()"
+              [disabled]="flag || !datos.especialidad_id"
+            ></p-dropdown>
+          </div>
+          <div class="form-group">
+            <label for="servicio">Servicio:</label>
+            <p-dropdown
+              placeholder="Seleccionar"
+              [filter]="true"
+              [resetFilterOnHide]="true"
+              formControlName="servicio"
+              [options]="servicios"
+              [(ngModel)]="datos.servicio_id"
+              (onChange)="change()"
+              [disabled]="flag || !datos.especialidad_id"
+            ></p-dropdown>
+          </div>
+          <div class="form-group">
+            <label for="turno">Turno:</label>
+            <p-dropdown
+              placeholder="Seleccionar"
+              [filter]="true"
+              [resetFilterOnHide]="true"
+              [showClear]="true"
+              formControlName="turno"
+              [options]="turnos"
+              [(ngModel)]="datos.turno_id"
+              (onChange)="consult()"
+            ></p-dropdown>
+          </div>
+          <div class="form-group" *ngIf="medico.telefono">
+            <label for="telefono">Teléfono:</label>
+            <input
+              type="text"
+              pInputText
+              [(ngModel)]="medico.telefono"
+              formControlName="telefono"
+              disabled
+            />
+          </div>
+        </form>
+        <br />
+      </div>
+
+      <ng-template pTemplate="footer">
+        <p-button
+          (click)="back()"
+          pTooltip="Volver"
+          tooltipPosition="right"
+          [hidden]="!flag"
+          icon="pi pi-arrow-left"
+        ></p-button>
+      </ng-template>
+    </p-card>
+  </div>
+  <div class="col-md-9">
+    <p-card>
+      <full-calendar [options]="calendarOptions"></full-calendar>
+      &nbsp;
+      <div class="p-d-flex p-jc-between">
+        <div>
+          <div class="p-formgroup-inline">
+            <div class="p-field-checkbox">
+              <i
+                class="fas fa-square"
+                style="font-size: 1.5rem; color: red"
+              ></i>
+              <label>Sin Cupo</label>
+            </div>
+            <div class="p-field-checkbox">
+              <i
+                class="fas fa-square"
+                style="font-size: 1.5rem; color: green"
+              ></i>
+              <label>Cupos disponibles</label>
+            </div>
+          </div>
+        </div>
+        <div>
+          <p-button
+            icon="pi pi-replay"
+            class="mr-2"
+            pTooltip="Refrescar calendario"
+            tooltipPosition="right"
+            (click)="consult()"
+            [disabled]="!datos.medico_id"
+          ></p-button>
+        </div>
+      </div>
+    </p-card>
+  </div>
+</div>
+
+<app-ver-cupo
+  (displayEvent)="displayChange($event)"
+  (selectEvent)="selectedC($event)"
+  [displayHelp]="displayHelp"
+  [params]="selected"
+  [disabledFlag]="disabledFlag"
+>
+</app-ver-cupo>

@@ -1,0 +1,47 @@
+<div class="login-body">
+    <div class="login-panel ui-fluid ">
+        <div class="ui-g">
+            <div class="ui-g-12 logo-container">
+                <!--img src="assets/dist/img/logo_sidor.jpg" class="logo remove-bg"-->
+                <img src="assets/dist/img/icon-login.png" class="login-icon">
+                <h4><b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Sistema Integral de Salud SIDOR</b></h4>
+            </div>
+            <form [formGroup]="loginForm" (ngSubmit)="login()">
+                <div class="ui-g-12">
+                    <label for="username"><h5>Usuario</h5></label>
+                    <div class="input-wrapper">
+                        <p [ngClass]="{ 'has-error': isSubmitted && formControls.username.errors }">
+                            <input type="text" placeholder="Introduzca el usuario" formControlName="username"
+                                [(ngModel)]="model.username">
+                        </p>
+                        <img src="assets/dist/img/user.png" class="user-icon">
+                    </div>
+                    <div *ngIf="isSubmitted && formControls.username.errors" class="help-block">
+                        <div *ngIf="formControls.username.errors.required">Usuario requerido</div>
+                    </div>
+                </div>
+
+                <div class="ui-g-12">
+                    <label for="password"><h5>Clave</h5></label>
+                    <div class="input-wrapper">
+                        <p [ngClass]="{ 'has-error': isSubmitted && formControls.password.errors }">
+                            <input type="password" placeholder="Introduzca la clave" formControlName="password"
+                                [(ngModel)]="model.password">
+                        </p>
+                        <img src="assets/dist/img/lock.png" class="lock-icon">
+                    </div>
+                    <div *ngIf="isSubmitted && formControls.password.errors" class="help-block">
+                        <div *ngIf="formControls.password.errors.required">Clave requerida</div>
+                    </div>
+                </div>
+
+                <div class="ui-g-12 button-container">
+                    <button pButton pRipple type="submit" label="Acceder"></button>
+                    <br>
+                    <br>
+                    <div *ngIf="error" class="alert alert-danger">{{error}}</div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

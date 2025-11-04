@@ -1,0 +1,28 @@
+<app-title title={{title}}></app-title>
+
+<p> Indique los siguientes datos para la búsqueda:</p>
+<div class="p-formgroup-inline">
+    <div class="p-field" title="Servicio">
+        <label for="servicio" class="p-sr-only">Servicio</label>
+        <p-dropdown [options]="servicios" placeholder="Servicio" [(ngModel)]="servicioSelected" required></p-dropdown>
+    </div>
+    <div class="p-field">
+        <label for="fecha" class="p-sr-only">Fecha</label>
+        <p-calendar placeholder="Fecha" [(ngModel)]="fecha"  [readonlyInput]="true" [showIcon]="true"
+            id="fecha"  baseZIndex="10000" [locale]="es" [yearNavigator]="true" [monthNavigator]="true"
+            dateFormat="dd/mm/yy" yearRange="2000:2050" showButtonBar="true"></p-calendar>
+    </div>
+    <button [disabled]="!servicioSelected || !fecha" (click)="consult()" pButton pRipple type="button"
+        label="Buscar">
+    </button>
+</div>
+
+<hr><br />
+
+<app-basic-table [cantidad]=total [registros]='reporte' [cols]='cols' [resizable]='false'  [summary]='true'
+    [exportarExcel]='true' [exportarPdf]='false'  [pdfPropiedades]='pdfPropiedades' [loading]="loading">
+</app-basic-table>
+
+
+<!-- Notificación -->
+<app-toast></app-toast> 

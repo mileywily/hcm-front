@@ -1,0 +1,61 @@
+
+<h3 class="first">Toggleable Row Groups</h3>
+<p-table
+  [value]="virtualDummies"
+  [columns]="cols"
+  dataKey="id">
+  <ng-template pTemplate="header" let-columns>
+    <tr>
+      <th>Nro</th>
+      <th>Cédula</th>
+      <th>Beneficiario</th>
+      <th *ngFor="let col of columns">
+        {{col.header}}
+      </th>
+    </tr>
+  </ng-template>
+  <!--ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex" let-expanded="expanded" let-columns="columns">
+    <tr class="ui-widget-header" *ngIf="rowGroupMetadata[rowData.ID].index === rowIndex && mostrarHeaderGroup" >
+      <td [attr.colspan]="columns.length + 1" [style.background-color]="'#eaeaea'">
+          <a href="#" [pRowToggler]="rowData" [style.display]="'block'">
+            <span>{{rowData.ID}}</span>
+          </a>
+      </td>
+    </tr>
+    <tr *ngIf="mostrarHeaderGroup">
+      <td class="text-center" *ngIf="rowGroupMetadata[rowData.ID].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.ID].size">
+        {{rowData.ID}}
+    </td>
+    
+      <td *ngFor="let col of columns">
+        {{rowData[col.field]}}
+      </td>
+    </tr>
+
+  </!--ng-template-->
+  <!--ng-template pTemplate="rowexpansion" let-rowData let-columns="columns" let-rowIndex="rowIndex">
+
+  </!ng-template-->
+
+  <ng-template pTemplate="body" let-rowData let-rowIndex="rowIndex"  let-columns="columns">
+    <!--tr class="ui-widget-header" *ngIf="rowGroupMetadata[rowData.id].index === rowIndex && !mostrarHeaderGroup" >
+      <td [attr.colspan]="columns.length + 3" [style.background-color]="'#eaeaea'">
+            <span>{{rowData.id}}</span>
+      </td>
+    </!--tr-->
+    <tr *ngIf="!mostrarHeaderGroup">
+      <td class="text-center" *ngIf="rowGroupMetadata[rowData.id].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.id].size">
+        {{rowData.id}}
+     </td>
+     <td class="text-center" *ngIf="rowGroupMetadata[rowData.id].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.id].size">
+      {{rowData.cedula_beneficiario}}
+    </td>
+    <td class="text-center" *ngIf="rowGroupMetadata[rowData.id].index === rowIndex" [attr.rowspan]="rowGroupMetadata[rowData.id].size">
+      {{rowData.nombres}}
+    </td>
+      <td *ngFor="let col of columns">
+        {{rowData[col.field]}}
+      </td>
+    </tr>
+  </ng-template>
+</p-table>

@@ -1,0 +1,314 @@
+<p-card>
+  <p ><label>{{title}}</label> </p>
+    <div class="p-fluid p-grid p-formgrid">
+         <div class="p-field p-col">
+            <label>Buscar por </label>
+            <p-selectButton
+              (onChange)="change()"
+              [options]="options"
+              [(ngModel)]="option"
+              optionLabel="label"
+              optionValue="value"
+            ></p-selectButton>
+          </div>
+            <div class="p-field p-col">
+              <label for="id">N° de Solicitud</label>
+              <input
+                type="text"
+                [disabled]="flagsolicitud"
+                [(ngModel)]="request_id"
+                pInputText
+                required
+                pKeyFilter="int"
+              />
+            </div>
+            <div class="p-field p-col">
+              <label for="cedula">Cédula Titular</label>
+              <input
+                type="text"
+                pKeyFilter="int"
+                [disabled]="flag"
+                [(ngModel)]="cedula"
+                pInputText
+                required
+                maxlength="8"
+                minlength="7"
+              />
+            </div>
+          <div class="p-field p-col">
+            <label for="fecha">Inicio</label>
+            <p-calendar
+              required
+              [disabled]="flag"
+              baseZIndex="10000"
+              [locale]="es"
+              [yearNavigator]="true"
+              [monthNavigator]="true"
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              inputId="icon"
+              yearRange="2000:2050"
+              showButtonBar="true"
+              placeholder="Seleccionar"
+              [(ngModel)]="fecha_inicio"
+            >
+            </p-calendar>
+          </div>
+          <div class="p-field p-col">
+            <label for="fecha">Fin</label>
+            <p-calendar
+              required
+              [disabled]="flag"
+              baseZIndex="10000"
+              [locale]="es"
+              [yearNavigator]="true"
+              [monthNavigator]="true"
+              dateFormat="dd/mm/yy"
+              [showIcon]="true"
+              inputId="icon"
+              yearRange="2000:2050"
+              showButtonBar="true"
+              placeholder="Seleccionar"
+             [(ngModel)]="fecha_fin"
+            >
+            </p-calendar>
+          </div>
+    </div>
+
+    <div class="p-formgroup-inline">
+    <div class="p-field">
+        <label for="especialidad" class="p-sr-only">Especialidad</label>
+        <p-dropdown [showClear]="true"  
+                    [filter]="true" 
+                    [options]="especialidades" 
+                    placeholder="Especialidad" 
+                    [(ngModel)]="especialidadSelected"
+                    required 
+                    [disabled]="flag">
+        </p-dropdown>
+    </div>
+
+    <div class="p-field">
+      <label for="ente" class="p-sr-only">Ente</label>
+      <p-dropdown [showClear]="true"  
+                  [filter]="true" 
+                  [options]="entes" 
+                  placeholder="Ente" 
+                  [(ngModel)]="enteSelected"
+                  required 
+                  [disabled]="flag">
+      </p-dropdown>
+  </div>
+  <div class="p-field">
+    <label for="estatus" class="p-sr-only">Estatus</label>
+    <p-dropdown [showClear]="true"  
+                [filter]="true" 
+                [options]="estadoSolicitudes" 
+                placeholder="Estatus" 
+                [(ngModel)]="estadoSolicitudSelected" 
+                required 
+                [disabled]="flag">
+    </p-dropdown>
+</div>
+    
+    <div class="p-field">
+      <label for="usuario" class="p-sr-only">Usuario</label>
+      <p-dropdown [showClear]="true" 
+                  [filter]="true" 
+                  [options]="usuarios" 
+                  placeholder="Usuario"  
+                  [disabled]="flag"
+                  [(ngModel)]="orden.usuario_creador"  >
+      </p-dropdown>
+    </div>
+
+    <div class="p-field">
+        <button (click)="consultar()" pButton pRipple type="button"
+            label="Buscar">
+        </button>
+    </div>
+    <div class="p-field">
+      <button (click)="limpiar_variables_combos()" pButton pRipple type="button"
+          label="Limpiar">
+      </button>
+  </div>
+</div>
+</p-card>
+
+<p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+      <button pButton pRipple label="Enviar" icon="pi pi-trash" class="p-button-danger"
+      (click)="enviar_siam()" 
+      [disabled]="!selectedRegistros || !selectedRegistros.length" >
+    </button>&nbsp;&nbsp;
+        <button pButton pRipple label="Cancelar" icon="pi pi-trash" class="p-button-danger"
+        (click)="dialogoCausaLote()" 
+        [disabled]="!selectedRegistros || !selectedRegistros.length" >
+      </button>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+     </ng-template>
+</p-toolbar>
+
+
+<p-table #dt 
+      [columns]="cols" 
+      [autoLayout]="true" 
+      [value]="Solicitudes" 
+      [rows]="10" 
+      [paginator]="true"
+      [resizableColumns]='true' 
+      [globalFilterFields]="['solicitud_id']" 
+      [(selection)]="selectedRegistros" 
+      [rowHover]="true"
+      [loading]="loading"
+      dataKey="solicitud_id" 
+      editMode="row" 
+      selectionMode="single"
+currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+    
+   <div class="p-fluid p-grid p-formgrid">
+  </div>
+    <div class="p-grid">
+        <div class="p-col">
+            
+        </div>
+
+        <div class="p-col p-text-right">
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Buscar..." />
+            </span>
+        </div>
+    </div>
+
+<!--/ng-template-->
+
+<ng-template pTemplate="header" let-columns>
+    <tr>
+        <th style="width: 3rem" [ngStyle]="{'width': '5%'}" class="text-center">
+        </th>
+        <th class="text-center" *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field"
+            [ngStyle]="{'width': col.width}">
+            {{col.header}}
+        </th>
+        <th [ngStyle]="{'width': '20%'}" class="text-center">Acciones </th>
+    </tr>
+
+</ng-template>
+<ng-template pTemplate="body" let-rowData let-columns="columns">
+    <tr>
+        <td style="width: 3em" [ngStyle]="{'width': '5%'}" class="text-center">
+            <a href="#" [pRowToggler]="rowData" >
+                <p-tableCheckbox [value]="rowData" 
+                [disabled]="!activarBotonCancelarSolicitudConsulta && !activarBotonCancelarSolicitudEstudio"    
+                 >
+              </p-tableCheckbox>
+            </a>
+        </td>
+        <td *ngFor="let col of columns" class="text-center">
+            {{rowData[col.field]}}
+        </td>
+        <td class="text-center">
+            <div class="p-d-flex">
+              <button pButton pRipple icon="pi pi-search" 
+              class="p-ripple p-button p-button-rounded p-button-accion p-mr-2"
+              title="Ver Solicitud"
+              (click)="verSolicitud(rowData)"
+              [disabled]="!activarBotonModificarSolicitudConsulta && !activarBotonModificarSolicitudEstudio"              
+              >
+            </button>
+            <button pButton pRipple icon="pi pi-ban" 
+              class="p-button-danger p-button-rounded p-button-plain "
+              title="Cancelar Solicitud"
+              [disabled]=" !activarBotonCancelarSolicitudConsulta && !activarBotonCancelarSolicitudEstudio"
+              (click)="dialogoCausa(rowData)">
+            </button>
+            </div>
+          </td>
+
+    </tr>
+</ng-template>
+
+
+<ng-template pTemplate="summary">
+    <div class="p-d-flex p-ai-center p-jc-between">
+      En total hay {{Solicitudes ? Solicitudes.length : 0 }} Solicitudes.
+    </div>
+</ng-template>
+
+
+
+</p-table>
+ <!-- Nuevo/Editar -->
+ <p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" [(header)]="tituloDialogo" [modal]="true"
+ styleClass="p-fluid" [closable]="false" [contentStyle]="{'overflow':'visible'}">
+
+ <ng-template pTemplate="content">
+
+    
+         <div class="p-field">
+           <p-dropdown 
+               [virtualScroll]="true" 
+               itemSize="43" 
+               [options]="causas"
+               [(ngModel)]="causa_solicitud_id" 
+               placeholder="Seleccionar la causa" 
+               name="causa" [filter]="true"
+               [resetFilterOnHide]="true" 
+               autofocus required>
+           </p-dropdown>
+        </div>
+  
+ </ng-template>
+
+ <ng-template pTemplate="footer">
+     <button pButton pRipple label="Cancelar" 
+            icon="pi pi-times" 
+            class="p-button-text" 
+            
+            (click)="close()">
+     </button>
+     <button pButton pRipple label="Aceptar" icon="pi pi-check" class="p-button-text" (click)="cancelarSolicitud()" [disabled]="!causa_solicitud_id"></button>
+ </ng-template>
+
+
+</p-dialog>
+
+<!-- Nuevo/Editar -->
+<p-dialog [(visible)]="displayDialogLote" [style]="{width: '450px'}" [(header)]="tituloDialogo" [modal]="true"
+ styleClass="p-fluid" [closable]="false" [contentStyle]="{'overflow':'visible'}">
+
+ <ng-template pTemplate="content">
+
+    
+         <div class="p-field">
+           <p-dropdown 
+               [virtualScroll]="true" 
+               itemSize="43" 
+               [options]="causas"
+               [(ngModel)]="causa_solicitud_id" 
+               placeholder="Seleccionar la causa" 
+               name="causa" [filter]="true"
+               [resetFilterOnHide]="true" 
+               autofocus required>
+           </p-dropdown>
+        </div>
+  
+ </ng-template>
+
+ <ng-template pTemplate="footer">
+     <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="close()"></button>
+     <button pButton pRipple label="Aceptar" icon="pi pi-check" class="p-button-text" (click)="deleteSelectedItems()" [disabled]="!causa_solicitud_id"></button>
+ </ng-template>
+
+
+</p-dialog>
+
+<!-- Notificación -->
+<app-toast></app-toast>
+
+<!-- Confirmación -->
+<app-confirm-dialog></app-confirm-dialog>

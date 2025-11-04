@@ -1,0 +1,171 @@
+<p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+        <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-accion p-mr-2"
+            (click)="openNew()"></button>
+        <button 
+         pButton 
+         pRipple 
+         label="Borrar" 
+         icon="pi pi-trash"
+          class="p-button-danger p-mr-2"
+            (click)="deleteSelectedItems()" 
+            [disabled]="!selectedRegistros || !selectedRegistros.length"></button>
+            <button
+            pButton
+            pRipple
+            label="Exportar"
+            icon="pi pi-file-excel"
+            class="p-button-success p-mr-2"
+           (click)="exportExcel()"
+           [disabled]="!medicoEspecialidades.length">
+        
+            </button>
+        </ng-template>
+
+    <ng-template pTemplate="right">
+        <!-- <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Importar" chooseLabel="Importar"
+                class="p-mr-2 p-d-inline-block"></p-fileUpload> 
+        <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-secondary"></button>-->
+    </ng-template>
+</p-toolbar>
+
+
+<p-table #dt [columns]="cols" [value]="medicoEspecialidades" [rows]="10" [paginator]="true"
+    [globalFilterFields]="['especialidad_id','label','especialidad']" [(selection)]="selectedRegistros" [rowHover]="true"
+    dataKey="medico_especialidad_id" editMode="row" scrollHeight="500px" selectionMode="single"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas" [showCurrentPageReport]="true">
+
+
+    <ng-template pTemplate="caption">
+
+        <div class="p-d-flex p-ai-center p-jc-between p-mb-2">
+
+            <h5 class="p-m-1">Médicos por Especialidad</h5>
+        </div>
+
+        <div class="p-grid">
+            <div class="p-col">
+            <!--
+                <p-dropdown [virtualScroll]="true" itemSize="43" [autoWidth]="false" [style]="{'width':'100%'}"
+                    [options]="medicos" [(ngModel)]="medicoSelected" placeholder="Seleccionar Médico"
+                    (onChange)="consultarMedicoEspecialidad()" name="medico" [filter]="true" [resetFilterOnHide]="true"
+                    class="ng-dirty ng-invalid">
+                </p-dropdown>
+            -->
+                <p-dropdown [virtualScroll]="true"
+                 itemSize="43" 
+                 [autoWidth]="false" 
+                 [style]="{'width':'100%'}"
+                 [showClear]="true" 
+                    [options]="especialidades" 
+                    [(ngModel)]="especialidadSelected" 
+                    placeholder="Seleccionar Especialidad"
+                    (onChange)="consultarMedicoEspecialidad()" 
+                    name="especilidad"
+                     [filter]="true"
+                     [resetFilterOnHide]="true"
+                    class="ng-dirty ng-invalid">
+                </p-dropdown>
+            </div>
+
+            <div class="p-col p-text-right">
+                <span class="p-input-icon-left">
+                    <i class="pi pi-search"></i>
+                    <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                        placeholder="Buscar..." />
+                </span>
+            </div>
+        </div>
+
+    </ng-template>
+
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th style="width: 3rem" [ngStyle]="{'width': '5%'}" class="text-center">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th class="text-center" *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field"
+                [ngStyle]="{'width': col.width}">
+                {{col.header}}
+            </th>
+            <th [ngStyle]="{'width': '20%'}" class="text-center">Acciones </th>
+        </tr>
+
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+            <td style="width: 3em" [ngStyle]="{'width': '5%'}" class="text-center">
+                <a href="#" [pRowToggler]="rowData">
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </a>
+            </td>
+            <td *ngFor="let col of columns" class="text-center">
+                {{rowData[col.field]}}
+            </td>
+            <td class="text-center">
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-accion p-mr-2"
+                    (click)="editar (rowData)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button"
+                    (click)="eliminar (rowData)"></button>
+            </td>
+        </tr>
+    </ng-template>
+
+
+    <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            En total hay {{medicoEspecialidades ? medicoEspecialidades.length : 0 }} especialidades.
+        </div>
+    </ng-template>
+</p-table>
+
+<!-- Nuevo/Editar -->
+<p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" [(header)]="tituloDialogo" [modal]="true"
+    styleClass="p-fluid" [closable]="false" [contentStyle]="{'overflow':'visible'}">
+
+    <ng-template pTemplate="content">
+
+        <form [formGroup]="form" novalidate>
+
+            <div class="p-field">
+                <label for="medico">Médico*</label>
+                <p-dropdown formControlName="medico"
+                [virtualScroll]="true" 
+                itemSize="43"
+                [options]="medicos"
+                [showClear]="true" 
+                [(ngModel)]="medicoEspecialidad.medico_id"
+                 placeholder="Seleccionar el médico" name="medico" [filter]="true"
+                [resetFilterOnHide]="true" autofocus required>
+                </p-dropdown>
+                <small class="p-invalid" *ngIf="submitted && form.get('medico').hasError('required')">* Campo
+                    requerido</small>
+            </div>
+
+            
+            <div class="p-field">
+                <label for="especialidad">Especialidad</label>
+                <p-dropdown formControlName="especialidad" [virtualScroll]="true" itemSize="43" [options]="especialidades"
+                    [(ngModel)]="medicoEspecialidad.especialidad_id" placeholder="Seleccionar especialidad" name="especialidad" [filter]="true"
+                    [resetFilterOnHide]="true" autofocus required>
+                </p-dropdown>
+                <small class="p-invalid" *ngIf="submitted && form.get('especialidad').hasError('required')">* Campo
+                    requerido</small>
+            </div>
+
+        </form>
+    </ng-template>
+
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="close()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardar()"></button>
+    </ng-template>
+
+
+</p-dialog>
+
+<!-- Notificación -->
+<app-toast></app-toast>
+
+<!-- Confirmación -->
+<app-confirm-dialog></app-confirm-dialog>

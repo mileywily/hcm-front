@@ -1,0 +1,118 @@
+<p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+        <button disabled="true" pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-accion p-mr-2"
+            (click)="openNew()"></button>
+        <button pButton pRipple label="Borrar" icon="pi pi-trash" class="p-button-danger"
+            (click)="deleteSelectedItems()" [disabled]="!selectedRegistros || !selectedRegistros.length"></button>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+        <!-- <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Importar" chooseLabel="Importar"
+                class="p-mr-2 p-d-inline-block"></p-fileUpload>
+        <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-secondary"></button>-->
+    </ng-template>
+</p-toolbar>
+
+<p-table #dt [columns]="cols" [value]="tipoSolicitudes" [rows]="10" [paginator]="true"
+    [globalFilterFields]="['tipo_solicitud_id','nombre','descripcion']"
+    [(selection)]="selectedRegistros" [rowHover]="true" dataKey="tipo_solicitud_id" editMode="row" scrollHeight="500px"
+    selectionMode="single" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+    [showCurrentPageReport]="true">
+
+    <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            <h5 class="p-m-0">Tipos de Solicitudes</h5>
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Buscar..." />
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <!--th style="width: 3em" [ngStyle]="{'width': '5%'}" class="text-center">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th-->
+            <th class="text-center" *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field"
+                [ngStyle]="{'width': col.width}">
+                {{col.header}}
+            </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+            <!--td style="width: 3em" [ngStyle]="{'width': '10%'}" class="text-center">
+                <a href="#" [pRowToggler]="rowData">
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </a>
+            </td-->
+            <td *ngFor="let col of columns" class="text-center">
+                {{rowData[col.field]}}
+            </td>
+
+            <!--td class="text-center">
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-accion p-mr-2"
+                    (click)="editar(rowData)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button"
+                    (click)="eliminar(rowData)"></button>
+            </td-->
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            En total hay {{tipoSolicitudes ? tipoSolicitudes.length : 0 }} tipos de solicitudes.
+        </div>
+    </ng-template>
+</p-table>
+
+
+<!-- Nuevo/Editar -->
+<p-dialog [(visible)]="displayDialog" [style]="{width: '450px'}" [(header)]="tituloDialogo" [modal]="true"
+    styleClass="p-fluid" [closable]="false" [contentStyle]="{'overflow':'visible'}">
+
+    <ng-template pTemplate="content">
+
+        <form [formGroup]="form" novalidate>
+
+            <div class="p-field">
+                <label for="nombre">Nombre*</label>
+                <input type="text" formControlName="nombre" pInputText id="nombre" [(ngModel)]="tipoSolicitud.nombre"
+                    autofocus required />
+                <small class="p-invalid" *ngIf="submitted && form.get('nombre').hasError('required')">* Campo
+                    requerido</small>
+            </div>
+
+            <div class="p-field">
+                <label for="descripcion">Descripción*</label>
+                <textarea pInputText type="text" formControlName="descripcion" inputId="descripcion" rows="3" cols="43"
+                    [(ngModel)]="tipoSolicitud.descripcion" pInputTextarea autofocus required></textarea>
+                <small class="p-invalid" *ngIf="submitted && form.get('descripcion').hasError('required')">* Campo
+                    requerido</small>
+            </div>
+
+            
+            <div class="p-field">
+                <label for="activo">Activo*</label>
+                <p-inputSwitch formControlName="activo" [(ngModel)]="tipoSolicitud.activo"
+                    (onChange)="handleChange($event, tipoSolicitud)" pInputTextarea autofocus required> </p-inputSwitch>
+                <small class="p-invalid" *ngIf="submitted && form.get('activo').hasError('required')">* Campo
+                    requerido</small>
+            </div>
+            
+        </form>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="close()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardar()"></button>
+    </ng-template>
+
+
+</p-dialog>
+
+<!-- Notificación -->
+<app-toast></app-toast>
+
+<!-- Confirmación -->
+<app-confirm-dialog></app-confirm-dialog>

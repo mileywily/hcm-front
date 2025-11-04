@@ -1,0 +1,100 @@
+<div class="card">
+  <p-table
+    #dt
+    [columns]="cols"
+    [value]="reporte"
+    [rows]="30"
+    [paginator]="true"
+    [globalFilterFields]="
+    ['solicitud_id',
+    'cedula_titular' ,
+    'parentesco',
+    'nombre_especialidad',
+    'nombre_estado_solicitud',
+    'nombre_tipo_atencion']"
+    [rowHover]="true"
+    dataKey="solicitud_id"
+    currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} solicitudes"
+    [showCurrentPageReport]="true"
+    styleClass="p-datatable-sm"
+    [autoLayout]="true"
+  >
+    <ng-template pTemplate="caption">
+      <div class="p-d-flex p-ai-center p-jc-between">
+        <h5 class="p-m-0">Solicitudes Abiertas</h5>
+        <span class="p-input-icon-left">
+          <i class="pi pi-search"></i>
+          <input
+            pInputText
+            type="text"
+            (input)="dt.filterGlobal($event.target.value, 'contains')"
+            placeholder="Buscar..."
+          />
+        </span>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th
+          class="text-center"
+          pResizableColumn
+          *ngFor="let col of cols"
+          [pSortableColumn]="col.field"
+          [ngStyle]="{ width: col.width }"
+        >
+          {{ col.header }}
+
+
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+      <tr>
+        <td [ngStyle]="{ width: '10%' }" class="text-center">
+          {{ rowData.solicitud_id }}
+        </td>
+        <td [ngStyle]="{ width: '10%' }" class="text-center">
+          {{ rowData.cedula_titular }}
+        </td>
+        <td [ngStyle]="{ width: '17%' }" class="text-center">
+          {{ rowData.nombre_titular }}
+        </td>
+        <td [ngStyle]="{ width: '17%' }" class="text-center">
+          {{ rowData.nombre_beneficiario }}
+        </td>
+        <td [ngStyle]="{ width: '10%' }" class="text-center">
+          {{ rowData.fecha_solicitud }}
+        </td>
+        <td [ngStyle]="{ width: '10%' }" class="text-center">
+          {{ rowData.nombre_especialidad}}
+        </td>
+        <td [ngStyle]="{ width: '10%' }" class="text-center">
+          {{ rowData.nombre_tipo_atencion}}
+        </td>
+        <td [ngStyle]="{ width: '10%' }" class="text-center">
+          {{ rowData.nombre_estado_solicitud}}
+        </td>
+        <td [ngStyle]="{ width: '6%' }" class="text-center">
+          <!--{{ rowData.nombre_tipo_cobertura}}-->
+          <div class="p-d-flex">
+            <button pButton pRipple icon="pi pi-search"
+                    class="p-ripple p-button p-button-rounded p-button-accion"
+                    title="Ver Solicitud"
+                    (click)="verSolicitud(rowData)">
+            </button>
+          </div>
+
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td colspan="9" style="text-align: left">
+          No se han encontrado registros.
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

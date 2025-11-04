@@ -1,0 +1,36 @@
+<p>ayuda works!</p>
+<app-dialog
+  [header]="helpTitle"
+  [displayHelp]="displayHelp"
+  [draggable]="draggable"
+  [maximizable]="maximizable"
+  [modal]="modal"
+  [resizable]="resizable"
+  [closable]="false"
+  [height]="height"
+  [width]="width"
+>
+  <ng-content select="[inputs]" header></ng-content>
+
+  <div body></div>
+
+  <div>
+    <p-button
+      (click)="save()"
+      label="Guardar"
+      styleClass="p-button-text"
+      [hidden]="!saveFlag"
+    ></p-button>
+    <p-button
+      (click)="select()"
+      label="Seleccionar"
+      styleClass="p-button-text"
+      [hidden]="!selectFlag"
+    ></p-button>
+    <p-button
+      (click)="close()"
+      label="Cerrar"
+      styleClass="p-button-text"
+    ></p-button>
+  </div>
+</app-dialog>

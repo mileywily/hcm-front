@@ -1,0 +1,176 @@
+<p-toolbar styleClass="p-mb-4">
+    <ng-template pTemplate="left">
+        <button pButton pRipple label="Nuevo" icon="pi pi-plus" class="p-button-accion p-mr-2"
+            (click)="openNew()"></button>
+        <button pButton pRipple label="Borrar" icon="pi pi-trash" class="p-button-danger"
+            (click)="deleteSelectedItems()" [disabled]="!selectedRegistros || !selectedRegistros.length"></button>
+    </ng-template>
+
+    <ng-template pTemplate="right">
+        <!-- <p-fileUpload mode="basic" accept="image/*" [maxFileSize]="1000000" label="Importar" chooseLabel="Importar"
+                class="p-mr-2 p-d-inline-block"></p-fileUpload> 
+        <button pButton pRipple label="Exportar" icon="pi pi-upload" class="p-button-secondary"></button>-->
+    </ng-template>
+</p-toolbar>
+
+<p-table #dt [columns]="cols" [value]="medicos" [rows]="10" [paginator]="true"
+    [globalFilterFields]="['medico_id','nombres','apellidos']"
+    [(selection)]="selectedRegistros" [rowHover]="true" dataKey="medico_id" editMode="row" scrollHeight="500px"
+    selectionMode="single" currentPageReportTemplate="Mostrando {first} a {last} de {totalRecords} entradas"
+    [showCurrentPageReport]="true">
+
+    <ng-template pTemplate="caption">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            <h5 class="p-m-0">Médicos</h5>
+            <span class="p-input-icon-left">
+                <i class="pi pi-search"></i>
+                <input pInputText type="text" (input)="dt.filterGlobal($event.target.value, 'contains')"
+                    placeholder="Buscar..." />
+            </span>
+        </div>
+    </ng-template>
+    <ng-template pTemplate="header" let-columns>
+        <tr>
+            <th style="width: 3em" [ngStyle]="{'width': '5%'}" class="text-center">
+                <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+            </th>
+            <th class="text-center" *ngFor="let col of columns" pResizableColumn [pSortableColumn]="col.field"
+                [ngStyle]="{'width': col.width}">
+                {{col.header}}
+            </th>
+
+            <th [ngStyle]="{'width': '20%'}" class="text-center">Acciones </th>
+        </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowData let-columns="columns">
+        <tr>
+            <td style="width: 3em" [ngStyle]="{'width': '5%'}" class="text-center">
+                <a href="#" [pRowToggler]="rowData">
+                    <p-tableCheckbox [value]="rowData"></p-tableCheckbox>
+                </a>
+            </td>
+            <td *ngFor="let col of columns" class="text-center">
+                {{rowData[col.field]}}
+            </td>
+
+            <td class="text-center">
+                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-accion p-mr-2"
+                    (click)="editar(rowData)"></button>
+                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button"
+                    (click)="eliminar(rowData)"></button>
+            </td>
+        </tr>
+    </ng-template>
+
+    <ng-template pTemplate="summary">
+        <div class="p-d-flex p-ai-center p-jc-between">
+            En total hay {{medicos ? medicos.length : 0 }} medicos.
+        </div>
+    </ng-template>
+</p-table>
+
+
+<!-- Nuevo/Editar -->
+<p-dialog [(visible)]="displayDialog" [style]="{width: '600px'}" [(header)]="tituloDialogo" [modal]="true"
+    styleClass="p-fluid" [closable]="false" [contentStyle]="{'overflow':'visible'}">
+
+    <ng-template pTemplate="content">
+
+        <form [formGroup]="form" novalidate>
+
+            <div class="p-fluid p-formgrid p-grid">
+
+                <div class="p-field p-col-12 p-md-6">
+                    <label for="nombres">Nombres*</label>
+                    <input type="text" formControlName="nombres" pInputText id="nombres" [(ngModel)]="medico.nombres"
+                        autofocus required />
+                    <small class="p-invalid" *ngIf="submitted && form.get('nombres').hasError('required')">* Campo
+                        requerido</small>
+                </div>
+
+                <div class="p-field p-col-12 p-md-6"> 
+                    <label for="apellidos">Apellidos*</label>
+                    <input type="text" formControlName="apellidos" pInputText id="apellidos" [(ngModel)]="medico.apellidos"
+                        autofocus required />
+                    <small class="p-invalid" *ngIf="submitted && form.get('apellidos').hasError('required')">* Campo
+                        requerido</small>
+                </div>
+
+                <div class="p-field p-col">
+                    <label for="cedula">Cédula*</label>
+                    <input type="text" formControlName="cedula" pInputText id="cedula" [(ngModel)]="medico.cedula"
+                        autofocus required />
+                    <small class="p-invalid" *ngIf="submitted && form.get('cedula').hasError('required')">* Campo
+                        requerido</small>
+                </div>
+                
+                <div class="p-field p-col">
+                    <label for="msds">msds*</label>
+                    <input type="text" formControlName="msds" pInputText id="msds" [(ngModel)]="medico.msds"
+                        autofocus required />
+                    <small class="p-invalid" *ngIf="submitted && form.get('msds').hasError('required')">* Campo
+                        requerido</small>
+                </div>
+
+                <div class="p-field p-col">
+                    <label for="telefono">Telefono*</label>
+                    <input type="text" formControlName="telefono" pInputText id="telefono" [(ngModel)]="medico.telefono"
+                        autofocus required />
+                    <small class="p-invalid" *ngIf="submitted && form.get('telefono').hasError('required')">* Campo
+                        requerido</small>
+                </div> 
+
+                <div class="p-field p-col-12">
+                    <label for="email">Email*</label>
+                    <input type="text" formControlName="email" pInputText id="email" [(ngModel)]="medico.email"
+                        autofocus required />
+                    <small class="p-invalid" *ngIf="submitted && form.get('email').hasError('required')">* Campo
+                        requerido</small>
+                </div> 
+                    
+
+                <div class="p-field p-col-12">
+                    <label for="horario">Horario*</label>
+                    <input type="text" formControlName="horario" pInputText id="horario" [(ngModel)]="medico.horario"
+                        autofocus required />
+                    <small class="p-invalid" *ngIf="submitted && form.get('horario').hasError('required')">* Campo
+                        requerido</small>
+                </div> 
+                <div class="p-field p-col">
+                    <label for="parroquia">Parroquia*</label>
+                    <input type="text" formControlName="parroquia" pInputText id="parroquia" [(ngModel)]="medico.parroquia"
+                        autofocus required />
+                    <small class="p-invalid" *ngIf="submitted && form.get('parroquia').hasError('required')">* Campo
+                        requerido</small>
+                </div> 
+                <div class="p-field p-col-12 p-md-8">
+                    <label for="direccion_consultorio">Dirección Consultorio*</label>
+                    <input type="text" formControlName="direccion_consultorio" pInputText id="direccion_consultorio" [(ngModel)]="medico.direccion_consultorio"
+                        autofocus required />
+                    <small class="p-invalid" *ngIf="submitted && form.get('direccion_consultorio').hasError('required')">* Campo
+                        requerido</small>
+                </div> 
+
+                <div class="p-field p-col-12">
+                    <label for="activo">Activo*</label>
+                    <p-inputSwitch formControlName="activo" [(ngModel)]="medico.activo"
+                        (onChange)="handleChange($event, medico)" pInputTextarea autofocus required> </p-inputSwitch>
+                    <small class="p-invalid" *ngIf="submitted && form.get('activo').hasError('required')">* Campo
+                        requerido</small>
+                </div>
+            </div>
+        </form>
+    </ng-template>
+    <ng-template pTemplate="footer">
+        <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="close()"></button>
+        <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="guardar()"></button>
+    </ng-template>
+
+
+</p-dialog>
+
+<!-- Notificación -->
+<app-toast></app-toast>
+
+<!-- Confirmación -->
+<app-confirm-dialog></app-confirm-dialog>

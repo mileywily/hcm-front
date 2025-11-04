@@ -1,0 +1,496 @@
+<div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+  
+          <p-panel >
+            <ng-template pTemplate="header">
+                <!-- Header content here --> 
+              <h5>{{title}}</h5>
+            </ng-template>
+            <!-- Body Content --> 
+  
+            <!--Fila 1-->
+  
+            <div class="p-fluid p-grid p-formgrid">
+              
+              <div class="p-field p-col-2">
+                <label for="solicitud_id">Nro. Solicitud</label>
+                <input
+                  type="text" class="p-inputtext-sm"
+                  readonly
+                  pInputText
+                  title="Nro. de la solicitud"
+                  [(ngModel)]="solicitud.solicitud_id"/>
+              </div>
+  
+              <div class="p-field p-col-2">
+                <label for="orden_id">Nro. Orden</label>
+                <input
+                  type="text" class="p-inputtext-sm"
+                  readonly
+                  pInputText
+                  title="Nro. Orden de servicio"
+                  [(ngModel)]="orden.atencion_id"/>
+              </div>
+              
+              <div class="p-field p-col-2">
+                <label for="cedula_titular">CI Titular</label>
+                <input
+                  type="text" class="p-inputtext-sm"
+                  readonly
+                  pInputText
+                  title="Cédula del titular"
+                  [(ngModel)]="beneficiario.cedula_titular"/>
+              </div>
+  
+              <div class="p-field p-col-6">
+                <label for="nombre_titular">Titular</label>
+                <input
+                  type="text" class="p-inputtext-sm"
+                  readonly
+                  pInputText
+                  [(ngModel)]="titular.nombres"/>
+              </div>
+            </div>
+  
+            <!--Fila 2-->
+            <div class="p-fluid p-grid p-formgrid">
+              <div class="p-field p-col-2">
+                <label for="cedula_beneficiario">CI Beneficiario</label>
+                <input
+                  type="text" class="p-inputtext-sm"
+                  readonly
+                  pInputText
+                  title="Cédula del Beneficiario"
+                  [(ngModel)]="beneficiario.cedula_hcm"/>
+              </div>
+  
+              <div class="p-field p-col-4">
+                <label for="nombre">Apellidos y Nombres</label>
+                <input
+                  type="text" class="p-inputtext-sm" 
+                  readonly
+                  pInputText
+                  [(ngModel)]="beneficiario.nombres"/>
+              </div>
+  
+              <div class="p-field p-col-2">
+                <label for="parentesco">Parentesco</label>
+                <input
+                  type="text" class="p-inputtext-sm"
+                  readonly
+                  pInputText
+                  [(ngModel)]="beneficiario.parentesco"/>
+              </div>
+  
+              <div class="p-field p-col-1">
+                <label for="edad">Edad</label>
+                <input
+                  type="text" class="p-inputtext-sm"
+                  readonly
+                  pInputText
+                  [(ngModel)]="edad"/>
+              </div>
+  
+              <div class="p-field p-col-1">
+                <label for="sexo">Sexo</label>
+                <input 
+                  type="text" class="p-inputtext-sm"
+                  readonly
+                  pInputText
+                  [(ngModel)]="beneficiario.sexo"/>
+              </div>  
+              
+              <div class="p-field p-col-2">
+                <label for="fecha_nacimiento">F. nacimiento</label>
+                <input
+                  type="text" class="p-inputtext-sm"
+                  readonly
+                  pInputText
+                  [(ngModel)]="fecha_nacimiento"/>
+              </div>
+            </div>
+  
+            <!--Fila 3-->
+            <form [formGroup]="form" novalidate>
+              <div class="p-fluid p-grid p-formgrid">   
+                <div class="p-field p-col-3">
+                  <label for="estadoOrden">Estado*</label>
+                  <p-dropdown formControlName="estadoOrden" 
+                      itemSize="43" 
+                      [options]="estadoOrdenes"
+                      [(ngModel)]="orden.estado_atencion_id"  
+                      name="estadoOrden" 
+                      [filter]="true"
+                      [resetFilterOnHide]="true" 
+                      autofocus 
+                       
+                      class="p-inputtext-sm"
+                      title="Estado Orden">
+                  </p-dropdown>
+                </div>
+  
+                <div class="p-field p-col-5">
+                  <label for="tipoOrden">Tipo de Orden*</label>
+                  <p-dropdown formControlName="tipoOrden"  
+                              itemSize="43" 
+                              [options]="tipoOrdenes"
+                              [(ngModel)]="orden.tipo_atencion_id" 
+                              name="tipoOrden" 
+                              [filter]="true"
+                              [resetFilterOnHide]="true" 
+                              autofocus 
+                              class="p-inputtext-sm"
+                              [disabled] = "orden.fecha_cita"
+                              title="Tipo de Orden">
+                  </p-dropdown>
+                </div>
+  
+                <div class="p-field p-col-4">
+                  <label for="prioridad">Prioridad</label>
+                  <p-dropdown formControlName="prioridad"  
+                              itemSize="43" 
+                              [options]="prioridades"
+                              [(ngModel)]="orden.prioridad_id" 
+                              name="prioridad" 
+                              [filter]="true"
+                              [resetFilterOnHide]="true" 
+                              autofocus 
+                              class="p-inputtext-sm"
+                              [disabled] = "orden.fecha_cita"
+                              title="Prioridad">
+                  </p-dropdown>
+                </div>
+                             
+              </div>
+  
+              <div class="p-fluid p-grid p-formgrid"> 
+  
+                <div class="p-field p-col-6">
+                  <label for="especialidad">Especialidad</label>
+                  <p-dropdown formControlName="especialidad"  
+                              itemSize="43" 
+                              [options]="especialidades"
+                              [(ngModel)]="orden.especialidad_id"
+                              name="especialidad" 
+                              [filter]="true"
+                              [resetFilterOnHide]="true" 
+                              autofocus 
+                              required 
+                              [disabled] = "true"
+                              (onChange)="dropdownMedicos();"
+                              class="p-inputtext-sm"
+                              title="Especialidad">
+                  </p-dropdown>
+                </div>
+                
+                <!--[disabled] = "orden.fecha_cita"-->
+  
+                <div class="p-field p-col-6">
+                  <label for="medico">Médico</label>
+                  <p-dropdown formControlName="medico"  
+                              itemSize="43" 
+                              [options]="medicos"
+                              [(ngModel)]="orden.medico_id" 
+                              placeholder="Seleccione" 
+                              name="medico" 
+                              [filter]="true"
+                              [resetFilterOnHide]="true" 
+                              autofocus 
+                              required 
+                              class="p-inputtext-sm"
+                              [disabled] = "orden.fecha_cita"
+                              title="Médico">
+                  </p-dropdown>
+                </div>
+              </div>
+  
+              <div class="p-fluid p-grid p-formgrid">
+                <div class="p-field p-col-6">
+                  <label for="motivo">Motivo*</label>
+                  <textarea pInputText typ e="text" formControlName="motivo" inputId="motivo" rows="2" cols="43"
+                  [(ngModel)]="orden.motivo" pInputTextarea autofocus required></textarea>
+                  <small class="p-invalid" *ngIf="submitted && form.get('motivo').hasError('required')">* Campo
+                    requerido</small>
+                </div>
+  
+                <div class="p-field p-col-6">
+                  <label for="observaciones">Observaciones</label>
+                  <textarea pInputText typ e="text" 
+                  formControlName="observaciones" 
+                  inputId="observaciones" rows="2" cols="43"
+                  [(ngModel)]="orden.observaciones" 
+                  pInputTextarea autofocus></textarea>
+          
+                </div>
+              </div>  
+              
+              <div class="p-fluid p-grid p-formgrid"> 
+                <div class="p-field p-col-3" *ngIf="this.tipoAtencionId == 3">
+                  <label for="servicio">Grupo</label>
+                  <p-dropdown formControlName="grupo" 
+                                itemSize="43" 
+                                [options]="grupos"
+                                [(ngModel)]="grupo"  
+                                name="grupo" 
+                                [filter]="true"
+                                [resetFilterOnHide]="true" 
+                                autofocus 
+                                required 
+                                class="p-inputtext-sm"
+                                placeholder="Seleccione" 
+                                [disabled] = "orden.fecha_cita"
+                                (onChange)="dropdownServiciosPorGrupo();"
+                                title="Grupos"> 
+                  </p-dropdown>
+  
+                </div>
+  
+                <div class="p-field p-col-4">
+                  <label for="servicio">Servicio</label>
+                  <p-dropdown formControlName="servicio" 
+                                placeholder="Seleccione" 
+                                itemSize="43" 
+                                [options]="servicios"
+                                [(ngModel)]="orden.servicio_id"  
+                                name="servicio" 
+                                [filter]="true"
+                                [resetFilterOnHide]="true" 
+                                autofocus 
+                                required 
+                                class="p-inputtext-sm"
+                                [disabled] = "orden.fecha_cita"
+                                title="Servicios">
+                  </p-dropdown>
+  
+                </div>
+  
+                <div class="p-field p-col-5">
+                  <label for="proveedor">Proveedor</label>
+                  <p-dropdown formControlName="proveedor"  
+                              itemSize="43" 
+                              [options]="proveedores"
+                              [(ngModel)]="orden.proveedor_id" 
+                              placeholder="Seleccione" 
+                              name="proveedor" [filter]="true"
+                              [resetFilterOnHide]="true" 
+                              autofocus
+                              [disabled]="orden.fecha_cita"
+                              required class="p-inputtext-sm"
+                              title="Proveedores">
+                  </p-dropdown>
+                </div>
+  
+              </div>
+            
+              <div class="p-fluid p-grid p-formgrid"> 
+                <div class="p-field p-col-3">
+                    <label for="fecha_cita">Fecha Cita</label>
+                    <p-calendar
+                      formControlName="fecha_cita"
+                      baseZIndex="10000"
+                      [yearNavigator]="true"
+                      [monthNavigator]="true"
+                      [(ngModel)]="orden.fecha_cita"
+                      dateFormat="yy-mm-dd"
+                      yearRange="2000:2050"
+                      showButtonBar="true"
+                      placeholder="Fecha de la Cita"
+                      autofocus
+                      required
+                      [showIcon]="true"
+                      [disabled]="true"
+                    >
+                    </p-calendar>
+                    <small class="p-invalid" *ngIf="submitted && form.get('fecha_cita').hasError('required')">
+                        Fecha de la Solicitud es necesario.
+                    </small>      
+                </div>
+  
+                <div class="p-field p-col-2" >
+                  <label for="fecha_cita">Agenda</label>
+                  <div style="text-align: right">
+                    <button
+                      type="button"
+                      pButton
+                      label="Ver Agenda"
+                      (click)="disponibilidad()"
+                      [disabled]="!orden.especialidad_id || !orden.medico_id || !orden.servicio_id || !orden.proveedor_id"
+                    ></button>
+                  </div>
+                </div>
+              </div>
+             
+              <br>
+              <!-- INICIO Examenes solicitados para caso LABORATORIO-->
+              <p-table *ngIf="solicitudExamenes.length >0"
+              styleClass="p-datatable-sm"
+              [columns]="cols"
+              [value]="solicitudExamenes"
+              [(selection)]="examenesSel"
+              editMode="row"
+              dataKey="examen_id"
+              [hidden]="!(solicitudExamenes.length > 0)" >
+  
+              <ng-template pTemplate="caption">
+                <div class="p-d-flex p-jc-between">Examenes Solicitados</div>
+              </ng-template>
+  
+              <ng-template pTemplate="header">
+                <tr>
+                  <th [ngStyle]="{ width: '10%' }">Código Examen.</th>
+                  <th [ngStyle]="{ width: '20%' }">Grupo Examen</th>
+                  <th [ngStyle]="{ width: '50%' }">Examen</th>
+                  <th [ngStyle]="{ width: '10%' }" class="text-center">
+                      <p-tableHeaderCheckbox [disabled]="totalAsignadas == solicitudExamenes.length "></p-tableHeaderCheckbox>
+                    
+                  </th>
+                  <!--<th [ngStyle]="{ width: '10%' }">Acción</th>-->
+                </tr>
+              </ng-template>
+  
+              <ng-template
+                pTemplate="body"
+                let-rowData
+                let-editing="editing"
+                let-ri="rowIndex"
+              >
+                <tr [pEditableRow]="rowData">
+                  <td class="text-left">
+                    {{ rowData.examen_id }}
+                  </td>
+                  <td class="text-left">
+                    {{ rowData.nombre_grupo }}
+                  </td>
+                  <td class="text-left">
+                    {{ rowData.nombre_examen }}
+                  </td>
+  
+                  <td style="width: 3em" [ngStyle]="{'width': '5%'}" class="text-center">
+                    <a href="#" [pRowToggler]="rowData" *ngIf="rowData.asignado == 0">
+                        <p-tableCheckbox [value]="rowData"
+                                         [disabled]="rowData.asignado == 1"
+                                         >
+                        </p-tableCheckbox>
+                    </a>
+  
+                    {{ rowData.asignado == 1 ? 'ASIGNADO' : ''}}
+                  </td>
+                </tr>
+              </ng-template>
+            </p-table>
+            <!-- FIN Examenes solicitados para caso LABORATORIO-->
+              <br>
+            </form>
+  
+            <!-- Servicios solicitados para el caso IMAGEN-->
+            <div class="container" *ngIf="reporteServicios.length >0">
+              <div class="row">
+                <div class="col-lg-12">
+                  <p-card>
+                    <p-table
+                      styleClass="p-datatable-sm p-datatable-striped"
+                      [columns]="cols"
+                      [value]="reporteServicios"
+                      [rows]="5"
+                      [paginator]="true"
+                      [loading]="loading"
+                      dataKey="servicio_id"
+                    >
+                      <ng-template pTemplate="caption">
+                        <div class="p-d-flex p-jc-between">Servicios Solicitados</div>
+                      </ng-template>
+                      <ng-template pTemplate="header">
+                        <tr>
+                          <th [ngStyle]="{ width: '10%' }">Código.</th>
+                          <th [ngStyle]="{ width: '20%' }">Grupo Servicio</th>
+                          <th [ngStyle]="{ width: '60%' }">Nombre Servicio</th>
+                          <th [ngStyle]="{ width: '10%' }">Asignado</th>
+                        </tr>
+                      </ng-template>
+  
+                      <ng-template pTemplate="body" let-rowData let-columns="columns">
+                        <tr>
+                          <td class="text-left">
+                            {{ rowData.servicio_id }}
+                          </td>
+                          <td class="text-left">
+                            {{ rowData.nombre_grupo }}
+                          </td>
+                          <td class="text-left">
+                            {{ rowData.nombre_servicio }}
+                          </td>
+                          <td class="text-left">
+                            {{ rowData.asignado == 0? 'NO' : 'SI' }}
+                          </td>
+                        </tr>
+                      </ng-template>
+                    </p-table>
+                  </p-card>
+                </div>
+              </div>
+            </div>
+  
+            <ng-template pTemplate="footer">
+                <!-- Footer content here 
+                <button pButton pRipple label="Guardar" class="p-button-accion p-mr-2" 
+                      (click)="displayHWChange(true)">
+                </button>--> 
+  
+  
+                <div style="text-align: right">
+                  <button
+                    class="p-mr-2"
+                    type="button"
+                    pButton
+                    label="Guardar"
+                    [disabled] = "!solicitud.solicitud_id"
+                    (click)="guardar()"
+                  ></button>
+  
+                  <button pButton pRipple
+                  class="p-ripple p-button  p-button-accion p-mr-2"
+                  title="Cerrar"
+                  label="Cerrar"
+                  (click)="cerrar()">
+                  </button>
+                </div>
+            </ng-template>
+  
+  
+          </p-panel>
+  
+  
+      </div>
+    </div>
+  
+    
+  </div>
+  
+  <app-block-ui [blocked]="blocked"></app-block-ui>
+  
+  <!-- Notificación -->
+  <app-toast></app-toast>
+  
+  
+  <!-- Confirmación -->
+  
+  
+   <!--<app-ayuda
+    [helpTitle]="'Ordenes'"
+    [displayHelp]="displayHelp"
+  
+    (displayEvent)="close()"
+    (saveEvent)="save()"
+  >
+    <div class="p-fluid p-formgrid p-grid" inputs>
+      //Formulario
+      <div class="p-field p-col-9">
+        <label>Parametro</label>
+        <input [(ngModel)]="results.nombre" type="text" pInputText />
+      </div>
+      
+  
+    </div>
+  </app-ayuda>-->
+  
