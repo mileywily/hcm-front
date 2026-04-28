@@ -1,3 +1,2 @@
-*.js 
-linguist-vendored 
-linguist-generated
+*.js linguist-vendored
+src/assets/**/*.js linguist-vendored
