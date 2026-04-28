@@ -21,7 +21,7 @@ Lenguajes: JavaScript, TypeScript, HTML5 y CSS3.
 
 Framework / Librería:  Angular
 
-Estilos: CSS Modules / SASS / Tailwind CSS.
+Estilos: CSS.
 
 
 
