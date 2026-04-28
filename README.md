@@ -16,17 +16,17 @@ Tipado Seguro: Uso de TypeScript para minimizar errores en tiempo de ejecución 
 
 Stack Tecnológico
 
-Lenguajes: JavaScript (Certificación Profesional 2025), TypeScript (Certificación Profesional 2025), HTML5 y CSS3.
+Lenguajes: JavaScript, TypeScript, HTML5 y CSS3.
 
 
-Framework / Librería: React.js / Angular (según tu implementación específica).
+Framework / Librería: React.js / Angular
 
 Estilos: CSS Modules / SASS / Tailwind CSS.
 
 Gestión de Estado: Context API / Redux / Hooks.
 
 
-Control de Versiones: Git (Certificación Profesional 2025).
+Control de Versiones: Git 
 
 Instalación y Configuración
 Clonar el repositorio: git clone https://github.com/mileywily/hcm-front.git
