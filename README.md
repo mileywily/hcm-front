@@ -19,11 +19,10 @@ Stack Tecnológico
 Lenguajes: JavaScript, TypeScript, HTML5 y CSS3.
 
 
-Framework / Librería: React.js / Angular
+Framework / Librería:  Angular
 
 Estilos: CSS Modules / SASS / Tailwind CSS.
 
-Gestión de Estado: Context API / Redux / Hooks.
 
 
 Control de Versiones: Git 
