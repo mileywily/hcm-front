@@ -1,41 +1,27 @@
-HCM Front-End Interface
-Descripción del Proyecto
-Este repositorio contiene la interfaz de usuario para el sistema de Gestión de Capital Humano (HCM). Se trata de una Single Page Application (SPA) moderna, diseñada para ofrecer una experiencia fluida y reactiva en la administración de personal, visualización de estructuras organizativas y gestión de nómina. El enfoque principal es la usabilidad y la integración eficiente con servicios de backend.
+# HcmFront
 
-Características Principales
-Interfaz Reactiva: Desarrollada con tecnologías modernas de frontend para asegurar una navegación rápida y sin recargas de página.
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.21.
 
-Componentes Modulares: Arquitectura basada en componentes reutilizables, lo que facilita el mantenimiento y la escalabilidad del diseño.
+## Development server
 
-Consumo de APIs REST: Integración completa con el backend para la gestión de datos en tiempo real mediante peticiones asíncronas.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-Diseño Responsivo (Mobile First): Interfaz totalmente adaptada a diferentes tamaños de pantalla, garantizando accesibilidad desde dispositivos móviles y escritorio.
+## Code scaffolding
 
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-Tipado Seguro: Uso de TypeScript para minimizar errores en tiempo de ejecución y mejorar la calidad del código.
+## Build
 
-Stack Tecnológico
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-Lenguajes: JavaScript, TypeScript, HTML5 y CSS3.
+## Running unit tests
 
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-Framework / Librería:  Angular
+## Running end-to-end tests
 
-Estilos: CSS.
+Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
+## Further help
 
-
-Control de Versiones: Git 
-
-Instalación y Configuración
-Clonar el repositorio: git clone https://github.com/mileywily/hcm-front.git
-
-Instalar dependencias: npm install o yarn install
-
-Configurar la URL de la API en el archivo de entorno .env.
-
-Iniciar el servidor de desarrollo: npm start o yarn start
-
-Autor
-
-Mileida Blanco - Fullstack Developer - LinkedIn
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
